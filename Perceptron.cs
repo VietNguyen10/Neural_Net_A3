@@ -11,8 +11,11 @@ namespace NeuralNet
     {
         public int bias {  get; set; }
         private List<Input_Evidence> Evidence_List { get; set; }
+
         public Perceptron() { 
         
         }
+
+        public static double 
     }
 }
