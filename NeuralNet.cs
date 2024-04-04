@@ -3,6 +3,10 @@
 
 namespace NeuralNet
 {
+    /// <summary>
+    /// Neural network class
+    /// Used for training and "thinking" for the neural network.
+    /// </summary>
     internal class NeuralNet
     {
         private Random _radomObj;

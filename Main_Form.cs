@@ -10,14 +10,30 @@ using System.Windows.Forms;
 
 namespace NeuralNet
 {
+    /// <summary>
+    /// Main_Form class
+    /// Ties project logic into Main_Form GUI
+    /// </summary>
     public partial class Main_Form : Form
     {
 
+        // File paths for MNIST dataset
+        string trainImagesPath = "../../train-images.idx3-ubyte";
+        string trainLabelsPath = "../../train-labels.idx1-ubyte";
+        string testImagesPath = "../../t10k-images.idx3-ubyte";
+        string testLabelsPath = "../../t10k-labels.idx1-ubyte";
+
+        //Counter for the number of child forms
         private int childFormNumber = 0;
 
         public Main_Form()
         {
             InitializeComponent();
+
+            // Load training dataset
+            (double[][] trainImages, int[] trainLabels) = MNISTLoader.LoadDataset(trainImagesPath, trainLabelsPath);
+            (double[][] testImages, int[] testLabels) = MNISTLoader.LoadDataset(testImagesPath, testLabelsPath);
+
         }
 
         private void ShowNewForm(object sender, EventArgs e)
