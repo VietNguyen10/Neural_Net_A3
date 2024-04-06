@@ -31,7 +31,7 @@ namespace NeuralNet
         private Graphics drawnGraphics;
         private bool isDrawing = false;
         private Point previousPoint;
-        private Pen drawingPen = new Pen(Color.Black, 3);
+        private Pen drawingPen = new Pen(Brushes.Black, 10);
 
         public Main_Form()
         {
@@ -145,8 +145,13 @@ namespace NeuralNet
         {
             if (isDrawing)
             {
-                // Draw onto the drawnBitmap directly
-                drawnGraphics.DrawLine(drawingPen, previousPoint, e.Location);
+                // Calculate the circle coordinates
+                int diameter = 2 * Math.Max(Math.Abs(e.X - previousPoint.X), Math.Abs(e.Y - previousPoint.Y));
+                int x = e.X - diameter / 2;
+                int y = e.Y - diameter / 2;
+
+                // Draw the ellipse (circle) onto the drawnBitmap directly
+                drawnGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
                 drawingArea.Invalidate();
                 previousPoint = e.Location;
             }
@@ -197,19 +202,6 @@ namespace NeuralNet
 
 
         //////////////////////////////Unused Status Bar items/////////////////////////////////
-
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStrip.Visible = toolBarToolStripMenuItem.Checked;
-        }
 
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
