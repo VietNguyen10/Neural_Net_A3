@@ -26,14 +26,31 @@ namespace NeuralNet
         //Counter for the number of child forms
         private int childFormNumber = 0;
 
+        //Drawing variables
+        private Bitmap drawnBitmap;
+        private Graphics drawnGraphics;
+        private bool isDrawing = false;
+        private Point previousPoint;
+        private Pen drawingPen = new Pen(Color.Black, 3);
+
         public Main_Form()
         {
             InitializeComponent();
+            InitializeDrawingArea();
 
             // Load training dataset
             (double[][] trainImages, int[] trainLabels) = MNISTLoader.LoadDataset(trainImagesPath, trainLabelsPath);
             (double[][] testImages, int[] testLabels) = MNISTLoader.LoadDataset(testImagesPath, testLabelsPath);
 
+        }
+
+        private void InitializeDrawingArea()
+        {
+            drawnBitmap = new Bitmap(drawingArea.Width, drawingArea.Height);
+            drawnGraphics = Graphics.FromImage(drawnBitmap);
+            drawnGraphics.Clear(Color.White);
+            drawingArea.Image = drawnBitmap;
+            previousPoint = Point.Empty;
         }
 
         private void ShowNewForm(object sender, EventArgs e)
@@ -96,6 +113,91 @@ namespace NeuralNet
             Console.Read();
         }
 
+        
+
+        //Helper for printing the matrix
+        static void PrintMatrix(double[,] matrix)
+        {
+            int rowLength = matrix.GetLength(0);
+            int colLength = matrix.GetLength(1);
+
+            for (int i = 0; i < rowLength; i++)
+            {
+                for (int j = 0; j < colLength; j++)
+                {
+                    Console.Write(string.Format("{0} ", matrix[i, j]));
+                }
+                Console.Write(Environment.NewLine);
+            }
+        }
+
+        /// <summary>
+        /// Drawing area functions
+        /// </summary>
+
+        private void drawingArea_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDrawing = true;
+            previousPoint = e.Location;
+        }
+
+        private void drawingArea_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDrawing)
+            {
+                // Draw onto the drawnBitmap directly
+                drawnGraphics.DrawLine(drawingPen, previousPoint, e.Location);
+                drawingArea.Invalidate();
+                previousPoint = e.Location;
+            }
+        }
+
+        private void drawingArea_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDrawing = false;
+        }
+
+        // Submits Drawing Area -- process to 28x28//
+        private void submitDrawingBtn_Click(object sender, EventArgs e)
+        {
+            if (drawnBitmap == null)
+            {
+                // Inform the user to draw something first
+                MessageBox.Show("Please draw something before submitting.");
+                return;
+            }
+
+            // Create a new Bitmap with size 28x28
+            Bitmap resizedImage = new Bitmap(28, 28);
+            float scaleX = (float)28 / drawnBitmap.Width;
+            float scaleY = (float)28 / drawnBitmap.Height;
+
+
+            // Get the graphics object of the resized image
+            using (Graphics g = Graphics.FromImage(resizedImage))
+            {
+                // Clear the resized image with white background
+                g.Clear(Color.White);
+
+                g.ScaleTransform(scaleX, scaleY);
+                g.DrawImage(drawnBitmap, new PointF(0, 0));
+            }
+
+            // Display the resized image in the displayPictureBox
+            displayArea.Image = resizedImage;
+        }
+
+        // Clears the drawing area//
+        private void clearDrawingBtn_Click(object sender, EventArgs e)
+        {
+            //Clears previous drawing
+            drawnGraphics.Clear(Color.White);
+            drawingArea.Refresh();
+        }
+
+
+        //////////////////////////////Unused Status Bar items/////////////////////////////////
+
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
@@ -139,22 +241,6 @@ namespace NeuralNet
             foreach (Form childForm in MdiChildren)
             {
                 childForm.Close();
-            }
-        }
-
-        //Helper for printing the matrix
-        static void PrintMatrix(double[,] matrix)
-        {
-            int rowLength = matrix.GetLength(0);
-            int colLength = matrix.GetLength(1);
-
-            for (int i = 0; i < rowLength; i++)
-            {
-                for (int j = 0; j < colLength; j++)
-                {
-                    Console.Write(string.Format("{0} ", matrix[i, j]));
-                }
-                Console.Write(Environment.NewLine);
             }
         }
 
