@@ -228,11 +228,17 @@ namespace NeuralNet
                     for (int x = 0; x < 28; x++)
                     {
                         // Get the pixel color from the input drawing
-                        Color pixelColor = drawnBitmap.GetPixel(x, y).ToArgb() == Color.Black.ToArgb() ? Color.Black : Color.White;
+                        Color pixelColor = drawnBitmap.GetPixel(x, y);
+
+                        // Calculate grayscale intensity using luminance formula
+                        int intensity = (int)(0.299 * pixelColor.R + 0.587 * pixelColor.G + 0.114 * pixelColor.B);
+
+                        // Create grayscale color using calculated intensity
+                        Color grayscaleColor = Color.FromArgb(intensity, intensity, intensity);
 
                         // Draw a scaled rectangle at the corresponding position
                         Rectangle rect = new Rectangle(x * scaleFactorX, y * scaleFactorY, scaleFactorX, scaleFactorY);
-                        using (SolidBrush brush = new SolidBrush(pixelColor))
+                        using (SolidBrush brush = new SolidBrush(grayscaleColor))
                         {
                             g.FillRectangle(brush, rect);
                         }
