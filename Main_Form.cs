@@ -150,9 +150,14 @@ namespace NeuralNet
                 int x = e.X - diameter / 2;
                 int y = e.Y - diameter / 2;
 
-                // Draw the ellipse (circle) onto the drawnBitmap directly
+                using (Graphics bitmapGraphics = Graphics.FromImage(drawnBitmap))
+                {
+                    bitmapGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
+                }
                 drawnGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
+
                 drawingArea.Invalidate();
+                drawingArea.Update();
                 previousPoint = e.Location;
             }
         }
@@ -165,13 +170,6 @@ namespace NeuralNet
         // Submits Drawing Area -- process to 28x28//
         private void submitDrawingBtn_Click(object sender, EventArgs e)
         {
-            if (drawnBitmap == null)
-            {
-                // Inform the user to draw something first
-                MessageBox.Show("Please draw something before submitting.");
-                return;
-            }
-
             // Create a new Bitmap with size 28x28
             Bitmap resizedImage = new Bitmap(28, 28);
             float scaleX = (float)28 / drawnBitmap.Width;
@@ -189,15 +187,59 @@ namespace NeuralNet
             }
 
             // Display the resized image in the displayPictureBox
-            displayArea.Image = resizedImage;
+            if (displayArea.Image != null)
+            {
+                displayArea.Image.Dispose();
+            }
+            drawnBitmap = resizedImage;
+
+            displayDrawing();
         }
 
         // Clears the drawing area//
         private void clearDrawingBtn_Click(object sender, EventArgs e)
         {
             //Clears previous drawing
+            drawnBitmap = new Bitmap(drawingArea.Width, drawingArea.Height);
             drawnGraphics.Clear(Color.White);
             drawingArea.Refresh();
+        }
+
+        private void displayDrawing()
+        {
+            // Create a new bitmap for the scaled drawing
+            Bitmap scaledImage = new Bitmap(280, 280);
+
+            // Clear the bitmap
+            using (Graphics clearGraphics = Graphics.FromImage(scaledImage))
+            {
+                clearGraphics.Clear(Color.White); // Assuming you want to clear with white color
+            }
+
+            // Calculate the scaling factor for width and height
+            int scaleFactorX = 280 / 28;
+            int scaleFactorY = 280 / 28;
+
+            // Draw the scaled pixels onto the bitmap
+            using (Graphics g = Graphics.FromImage(scaledImage))
+            {
+                for (int y = 0; y < 28; y++)
+                {
+                    for (int x = 0; x < 28; x++)
+                    {
+                        // Get the pixel color from the input drawing
+                        Color pixelColor = drawnBitmap.GetPixel(x, y).ToArgb() == Color.Black.ToArgb() ? Color.Black : Color.White;
+
+                        // Draw a scaled rectangle at the corresponding position
+                        Rectangle rect = new Rectangle(x * scaleFactorX, y * scaleFactorY, scaleFactorX, scaleFactorY);
+                        using (SolidBrush brush = new SolidBrush(pixelColor))
+                        {
+                            g.FillRectangle(brush, rect);
+                        }
+                    }
+                }
+            }
+            displayArea.Image = scaledImage;
         }
 
 
