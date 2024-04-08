@@ -13,173 +13,192 @@ namespace NeuralNet
     /// </summary>
     internal class NeuralNet
     {
-        /// <summary>
-		/// The amount of neurons per layer
-		/// </summary>
-		private readonly UInt16[] layerData;
 
-        /// <summary>
-        /// The number of layers
-        /// </summary>
-        private readonly Byte layerCount;
-
-        /// <summary>
-        /// The global NeuralNetwork randomizer
-        /// </summary>
-        private static Random rdm = new Random();
-
-        /// <summary>
-        /// The layers
-        /// </summary>
-        private List<List<Neuron>> layers;
-
-        /// <summary>
-        /// The global NeuralNetwork learning rate
-        /// </summary>
-        private const Single descent = 0.00033F;
-
-        /// <summary>
-        /// The connections between neurons
-        /// </summary>
-        private Dictionary<Neuron, Dictionary<Neuron, Single>> weights;
-
-        public NeuralNet(UInt16[] layerLengths)
+        public struct DataPoint
         {
+            public readonly double[] inputs;
+            public readonly double[] expectedOutputs;
+            public readonly int label;
 
-            this.layerData = layerLengths;
-            this.layerCount = (Byte)(this.layerData.Length);
-            this.layers = new List<List<Neuron>>(this.layerCount);
-            this.weights = new Dictionary<Neuron, Dictionary<Neuron, Single>>();
-
-            Byte i = 0;
-            UInt16 j = 0;
-            while (i < this.layerCount)
+            public DataPoint(double[] inputs, int label, int numLabels)
             {
-                this.layers.Add(new List<Neuron>(this.layerData[i]));
-                while (j < layerData[i])
-                {
-                    this.layers[i].Add(new Neuron() { activation = 0, bias =/*(SByte)(NeuralNet.rdm.Next(-14,15))*/0 });
-                    ++j;
-                }
-                ++i;
-                j = 0;
+                this.inputs = inputs;
+                this.label = label;
+                expectedOutputs = CreateOneHot(label, numLabels);
             }
-            while (j < (layerCount - 1))
+
+            public static double[] CreateOneHot(int index, int num)
             {
-                foreach (Neuron n in this.layers[j])
-                {
-                    this.weights.Add(n, new Dictionary<Neuron, Single>(this.layerData[j + 1]));
-                    foreach (Neuron n0 in this.layers[j + 1])
-                        this.weights[n].Add(n0, (Single)((NeuralNet.rdm.NextDouble() - NeuralNet.rdm.NextDouble()) / 10F));
-                }
-                ++j;
+                double[] oneHot = new double[num];
+                oneHot[index] = 1;
+                return oneHot;
             }
         }
 
-        /// <summary>
-		/// Make a prediction
-		/// </summary>
-		/// <param name="input"></param>
-		/// <param name="desired"></param>
-		/// <param name="learn"></param>
-		/// <returns></returns>
-		public List<Byte> makePrediction(IEnumerable<Byte> input, Byte[] desired, Boolean learn, Boolean visualize = false, Action onFail = null)
+        public readonly Layer[] layers;
+        public readonly int[] layerSizes;
+
+        public ICost cost;
+        System.Random rng;
+        NetworkLearnData[] batchLearnData;
+
+        // Create the neural network
+        public NeuralNet(params int[] layerSizes)
         {
+            this.layerSizes = layerSizes;
+            rng = new System.Random();
 
-            //Clear all potential old neuron values
-            foreach (List<Neuron> layer in this.layers.Skip(1))
-                foreach (Neuron nrn in layer)
-                    nrn.activation = 0;
-
-            //Restructure input
-            List<Byte> _input;
-            if (input.GetType() == typeof(List<Byte>))
-                _input = (List<Byte>)input;
-            else _input = new List<Byte>(input);
-
-            //Fill input layers
-            UInt16 i = 0;
-            while (i < this.layerData[0]) /* possible data loss if input.Length>layerData[0] */
+            layers = new Layer[layerSizes.Length - 1];
+            for (int i = 0; i < layers.Length; i++)
             {
-
-                this.layers[0][i].activation = _input[i];
-                ++i;
-
-            }
-            i = 0;
-            Single sum = 0;
-
-            while (i < (this.layerCount - 1))
-            {
-
-                foreach (Neuron neuron in this.layers[i + 1])
-                {
-
-                    foreach (Neuron neuron0 in this.layers[i])
-                    {
-                        //Console.WriteLine("Activation:"+neuron0.activation.ToString()+",bias:"+neuron0.bias.ToString()+",weight:"+this.weights[neuron0][neuron].ToString());
-                        sum += (neuron0.activation + neuron0.bias) * (this.weights[neuron0][neuron]) * 0.5F;
-                    }
-
-                    neuron.activation = sum.sigmoid();
-                    //Console.WriteLine("Sum:"+sum.ToString()+",Sigmoided:"+sum.sigmoid().ToString());
-                    sum = 0;
-
-                }
-
-                ++i;
-
+                layers[i] = new Layer(layerSizes[i], layerSizes[i + 1], rng);
             }
 
-            if (learn) this.backPropogate(desired, onFail);
-            return this.layers[this.layerCount - 1].Select(x => x.activation).ToList();
+            cost = new Cost.MeanSquaredError();
         }
 
-        private void backPropogate(Byte[] desiredAnswers, Action onFail)
+        // Run the inputs through the network to predict which class they belong to.
+        // Also returns the activations from the output layer.
+        public (int predictedClass, double[] outputs) Classify(double[] inputs)
         {
-            foreach (List<Neuron> layer in this.layers)
-                foreach (Neuron n in layer)
-                    n.toDescend = 0;
+            var outputs = CalculateOutputs(inputs);
+            int predictedClass = MaxValueIndex(outputs);
+            return (predictedClass, outputs);
+        }
 
-            foreach (Neuron n in this.layers.Last())
-                n.toDescend = (n.activation - desiredAnswers[this.layers.Last().IndexOf(n)]);
-            Byte i = (Byte)(this.layerCount - 2);
-            Single sum = 0F;
-            while (true)
+        // Run the inputs through the network to calculate the outputs
+        public double[] CalculateOutputs(double[] inputs)
+        {
+            foreach (Layer layer in layers)
             {
-                foreach (Neuron n in this.layers[i])
-                {
-                    foreach (Neuron n0 in this.layers[i + 1])
-                        sum += (this.weights[n][n0] * n0.toDescend);
+                inputs = layer.CalculateOutputs(inputs);
+            }
+            return inputs;
+        }
 
-                    n.toDescend = sum * ((Single)(n.activation * n.bias)).sigmoidF();
-                    //					Console.WriteLine("toDescend:"+n.toDescend.ToString()+",sum:"+sum.ToString()+",activation:"+n.activation.ToString()+",bias:"+n.bias.ToString());
-                    try { n.bias -= (SByte)(NeuralNet.descent * (n.toDescend)); }//TODO:: check if this can be better calculated (more specific?)
-                    catch
-                    {
-                        if (onFail != null)
-                            onFail.Invoke();
-                        //						Console.WriteLine("toDescend:"+n.toDescend.ToString()+",sum:"+sum.ToString()+",activation:"+n.activation.ToString()+",bias:"+n.bias.ToString()); 
-                    }
-                    sum = 0F;
-                }
-                if (i == 0) break;
-                --i;
-            }
-            i = 0;
-            while (i != (this.layerCount - 1))
+
+        public void Learn(DataPoint[] trainingData, double learnRate, double regularization = 0, double momentum = 0)
+        {
+
+            if (batchLearnData == null || batchLearnData.Length != trainingData.Length)
             {
-                foreach (Neuron n in this.layers[i])
+                batchLearnData = new NetworkLearnData[trainingData.Length];
+                for (int i = 0; i < batchLearnData.Length; i++)
                 {
-                    foreach (Neuron n0 in this.layers[i + 1])
-                    {
-                        //						Single prev=this.weights[n][n0];
-                        this.weights[n][n0] -= (NeuralNet.descent * (n.activation / 255) * n0.toDescend);
-                        //						Console.WriteLine("Old:"+prev.ToString()+",New:"+this.weights[n][n0].ToString()+"descent:"+NeuralNetwork.descent+",activation:"+n.activation+",toDescend:"+n0.toDescend);
-                    }
+                    batchLearnData[i] = new NetworkLearnData(layers);
                 }
-                ++i;
             }
+
+            System.Threading.Tasks.Parallel.For(0, trainingData.Length, (i) =>
+            {
+                UpdateGradients(trainingData[i], batchLearnData[i]);
+            });
+
+
+            // Update weights and biases based on the calculated gradients
+            for (int i = 0; i < layers.Length; i++)
+            {
+                layers[i].ApplyGradients(learnRate / trainingData.Length, regularization, momentum);
+            }
+        }
+
+
+        void UpdateGradients(DataPoint data, NetworkLearnData learnData)
+        {
+            // Feed data through the network to calculate outputs.
+            // Save all inputs/weightedinputs/activations along the way to use for backpropagation.
+            double[] inputsToNextLayer = data.inputs;
+
+            for (int i = 0; i < layers.Length; i++)
+            {
+                inputsToNextLayer = layers[i].CalculateOutputs(inputsToNextLayer, learnData.layerData[i]);
+            }
+
+            // -- Backpropagation --
+            int outputLayerIndex = layers.Length - 1;
+            Layer outputLayer = layers[outputLayerIndex];
+            LayerLearnData outputLearnData = learnData.layerData[outputLayerIndex];
+
+            // Update output layer gradients
+            outputLayer.CalculateOutputLayerNodeValues(outputLearnData, data.expectedOutputs, cost);
+            outputLayer.UpdateGradients(outputLearnData);
+
+            // Update all hidden layer gradients
+            for (int i = outputLayerIndex - 1; i >= 0; i--)
+            {
+                LayerLearnData layerLearnData = learnData.layerData[i];
+                Layer hiddenLayer = layers[i];
+
+                hiddenLayer.CalculateHiddenLayerNodeValues(layerLearnData, layers[i + 1], learnData.layerData[i + 1].nodeValues);
+                hiddenLayer.UpdateGradients(layerLearnData);
+            }
+
+        }
+
+        public void SetCostFunction(ICost costFunction)
+        {
+            this.cost = costFunction;
+        }
+
+        public void SetActivationFunction(IActivation activation)
+        {
+            SetActivationFunction(activation, activation);
+        }
+
+        public void SetActivationFunction(IActivation activation, IActivation outputLayerActivation)
+        {
+            for (int i = 0; i < layers.Length - 1; i++)
+            {
+                layers[i].SetActivationFunction(activation);
+            }
+            layers[layers.Length - 1].SetActivationFunction(outputLayerActivation);
+        }
+
+
+        public int MaxValueIndex(double[] values)
+        {
+            double maxValue = double.MinValue;
+            int index = 0;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] > maxValue)
+                {
+                    maxValue = values[i];
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+    }
+
+
+    internal class NetworkLearnData
+    {
+        public LayerLearnData[] layerData;
+
+        public NetworkLearnData(Layer[] layers)
+        {
+            layerData = new LayerLearnData[layers.Length];
+            for (int i = 0; i < layers.Length; i++)
+            {
+                layerData[i] = new LayerLearnData(layers[i]);
+            }
+        }
+    }
+
+    internal class LayerLearnData
+    {
+        public double[] inputs;
+        public double[] weightedInputs;
+        public double[] activations;
+        public double[] nodeValues;
+
+        public LayerLearnData(Layer layer)
+        {
+            weightedInputs = new double[layer.numNodesOut];
+            activations = new double[layer.numNodesOut];
+            nodeValues = new double[layer.numNodesOut];
         }
     }
 }

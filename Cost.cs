@@ -23,7 +23,7 @@ namespace NeuralNet
                 case CostType.CrossEntropy:
                     return new CrossEntropy();
                 default:
-                    UnityEngine.Debug.LogError("Unhandled cost type");
+                    Console.Write("Unhandled cost type");
                     return new MeanSquaredError();
             }
         }
@@ -89,4 +89,4 @@ namespace NeuralNet
 
     }
 }
-}
+

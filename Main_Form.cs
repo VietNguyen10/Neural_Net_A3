@@ -16,13 +16,6 @@ namespace NeuralNet
     /// </summary>
     public partial class Main_Form : Form
     {
-
-        // File paths for MNIST dataset
-        readonly string trainImagesPath = "../../train-images.idx3-ubyte";
-        readonly string trainLabelsPath = "../../train-labels.idx1-ubyte";
-        readonly string testImagesPath = "../../t10k-images.idx3-ubyte";
-        readonly string testLabelsPath = "../../t10k-labels.idx1-ubyte";
-
         //Counter for the number of child forms
         private int childFormNumber = 0;
 
@@ -34,17 +27,13 @@ namespace NeuralNet
         readonly private Pen drawingPen = new Pen(Brushes.Black, 10);
 
         //Neural Network variables
-        NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
+        MNISTLoader mload = new MNISTLoader();
+        //NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
 
         public Main_Form()
         {
             InitializeComponent();
             InitializeDrawingArea();
-
-            // Load training dataset
-            (double[][] trainImages, int[] trainLabels) = MNISTLoader.LoadDataset(trainImagesPath, trainLabelsPath);
-            (double[][] testImages, int[] testLabels) = MNISTLoader.LoadDataset(testImagesPath, testLabelsPath);
-
         }
 
         private void InitializeDrawingArea()
@@ -211,6 +200,30 @@ namespace NeuralNet
         }
 
 
+        private void loadMNISTCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mload.LoadMNISTCSV();
+            MessageBox.Show("MNIST dataset loaded successfully.");
+        }
+
+        private void loadMNISTCSVtestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mload.LoadMNISTCSV_test();
+            MessageBox.Show("MNIST test loaded successfully.");
+        }
+
+        private void loadMNISTByteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mload.LoadTrainingDataset();
+            MessageBox.Show("MNIST dataset loaded successfully.");
+        }
+
+        private void loadMNISTBytetestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mload.LoadTestingDataset();
+            MessageBox.Show("MNIST test loaded successfully.");
+        }
+
         //////////////////////////////Unused Status Bar items/////////////////////////////////
 
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -250,5 +263,6 @@ namespace NeuralNet
             }
         }
 
+       
     }
 }

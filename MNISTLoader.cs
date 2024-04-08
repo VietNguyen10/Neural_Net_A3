@@ -13,10 +13,63 @@ namespace NeuralNet
     /// </summary>
     internal class MNISTLoader
     {
-        public static (double[][], int[]) LoadDataset(string imagesFilePath, string labelsFilePath)
+        private readonly string _filePath = "../../mnist_train.csv";
+        private readonly string _filePath_test = "../../mnist_test.csv";
+
+        // File paths for MNIST dataset
+        static string trainImagesPath = "../../train-images.idx3-ubyte";
+        static string trainLabelsPath = "../../train-labels.idx1-ubyte";
+        static string testImagesPath = "../../t10k-images.idx3-ubyte";
+        static string testLabelsPath = "../../t10k-labels.idx1-ubyte";
+
+        public MNISTLoader()
         {
-            int[][] images = LoadImages(imagesFilePath);
-            int[] labels = LoadLabels(labelsFilePath);
+            // Check if MNIST dataset files exist
+            if ((!File.Exists(trainImagesPath) || !File.Exists(trainLabelsPath) || !File.Exists(testImagesPath) || !File.Exists(testLabelsPath)) && !File.Exists(_filePath))
+            {
+                throw new FileNotFoundException("MNIST dataset files not found.");
+            }
+        }
+
+        public (double[][], int[]) LoadMNISTCSV()
+        {
+            // Read lines from CSV file
+            string[] lines = File.ReadAllLines(_filePath).Skip(1).ToArray();
+
+            // Extract labels and images from lines
+            int[] labels = lines.Select(line => int.Parse(line.Split(',')[0])).ToArray();
+            double[][] images = lines.Select(line => line.Split(',').Skip(1).Select(x => double.Parse(x) / 255.0).ToArray()).ToArray();
+
+            return (images, labels);
+        }
+
+        public (double[][], int[]) LoadMNISTCSV_test()
+        {
+            // Read lines from CSV file
+            string[] lines = File.ReadAllLines(_filePath_test).Skip(1).ToArray();
+
+            // Extract labels and images from lines
+            int[] labels = lines.Select(line => int.Parse(line.Split(',')[0])).ToArray();
+            double[][] images = lines.Select(line => line.Split(',').Skip(1).Select(x => double.Parse(x) / 255.0).ToArray()).ToArray();
+
+            return (images, labels);
+        }
+
+
+        public (double[][], int[]) LoadTrainingDataset()
+        {
+            int[][] images = LoadImages(trainImagesPath);
+            int[] labels = LoadLabels(trainLabelsPath);
+
+            // Convert images to double array and normalize pixel values
+            double[][] normalizedImages = NormalizeImages(images);
+
+            return (normalizedImages, labels);
+        }
+        public (double[][], int[]) LoadTestingDataset()
+        {
+            int[][] images = LoadImages(testImagesPath);
+            int[] labels = LoadLabels(testLabelsPath);
 
             // Convert images to double array and normalize pixel values
             double[][] normalizedImages = NormalizeImages(images);
@@ -24,7 +77,7 @@ namespace NeuralNet
             return (normalizedImages, labels);
         }
 
-        private static int[][] LoadImages(string filePath)
+        private int[][] LoadImages(string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             using (var reader = new BinaryReader(stream))
@@ -53,7 +106,7 @@ namespace NeuralNet
             }
         }
 
-        private static int[] LoadLabels(string filePath)
+        private int[] LoadLabels(string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             using (var reader = new BinaryReader(stream))
@@ -76,7 +129,7 @@ namespace NeuralNet
             }
         }
 
-        private static double[][] NormalizeImages(int[][] images)
+        private double[][] NormalizeImages(int[][] images)
         {
             double[][] normalizedImages = new double[images.Length][];
 
@@ -92,7 +145,7 @@ namespace NeuralNet
             return normalizedImages;
         }
 
-        private static int SwapEndianness(int value)
+        private int SwapEndianness(int value)
         {
             return (int)(((uint)(value & 0x000000FF) << 24) |
                          ((uint)(value & 0x0000FF00) << 8) |

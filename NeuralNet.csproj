@@ -50,6 +50,7 @@
     <Compile Include="Cost.cs" />
     <Compile Include="IActivation.cs" />
     <Compile Include="ICost.cs" />
+    <Compile Include="Layer.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Main_Form.cs">
       <SubType>Form</SubType>
