@@ -18,10 +18,10 @@ namespace NeuralNet
     {
 
         // File paths for MNIST dataset
-        string trainImagesPath = "../../train-images.idx3-ubyte";
-        string trainLabelsPath = "../../train-labels.idx1-ubyte";
-        string testImagesPath = "../../t10k-images.idx3-ubyte";
-        string testLabelsPath = "../../t10k-labels.idx1-ubyte";
+        readonly string trainImagesPath = "../../train-images.idx3-ubyte";
+        readonly string trainLabelsPath = "../../train-labels.idx1-ubyte";
+        readonly string testImagesPath = "../../t10k-images.idx3-ubyte";
+        readonly string testLabelsPath = "../../t10k-labels.idx1-ubyte";
 
         //Counter for the number of child forms
         private int childFormNumber = 0;
@@ -31,7 +31,7 @@ namespace NeuralNet
         private Graphics drawnGraphics;
         private bool isDrawing = false;
         private Point previousPoint;
-        private Pen drawingPen = new Pen(Brushes.Black, 10);
+        readonly private Pen drawingPen = new Pen(Brushes.Black, 10);
 
         //Neural Network variables
         NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
@@ -77,9 +77,11 @@ namespace NeuralNet
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            };
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 string FileName = saveFileDialog.FileName;

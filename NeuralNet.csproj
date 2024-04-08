@@ -46,9 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Input_Evidence.cs" />
+    <Compile Include="Activation.cs" />
+    <Compile Include="IActivation.cs" />
     <Compile Include="Neuron.cs" />
-    <Compile Include="Perceptron.cs" />
     <Compile Include="Main_Form.cs">
       <SubType>Form</SubType>
     </Compile>
