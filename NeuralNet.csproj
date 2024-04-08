@@ -73,6 +73,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="94_character_TMNIST.csv" />
+    <None Include="mnist_test.csv" />
+    <None Include="mnist_train.csv" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
