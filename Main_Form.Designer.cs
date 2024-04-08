@@ -62,6 +62,7 @@
             this.loadMNISTCSVtestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMNISTByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadMNISTBytetestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadTMNISTCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
@@ -172,7 +173,8 @@
             this.loadMNISTCSVToolStripMenuItem,
             this.loadMNISTCSVtestToolStripMenuItem,
             this.loadMNISTByteToolStripMenuItem,
-            this.loadMNISTBytetestToolStripMenuItem});
+            this.loadMNISTBytetestToolStripMenuItem,
+            this.loadTMNISTCSVToolStripMenuItem});
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(46, 20);
             this.toolsMenu.Text = "&Tools";
@@ -333,6 +335,13 @@
             this.loadMNISTBytetestToolStripMenuItem.Text = "Load MNIST byte_test";
             this.loadMNISTBytetestToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTBytetestToolStripMenuItem_Click);
             // 
+            // loadTMNISTCSVToolStripMenuItem
+            // 
+            this.loadTMNISTCSVToolStripMenuItem.Name = "loadTMNISTCSVToolStripMenuItem";
+            this.loadTMNISTCSVToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadTMNISTCSVToolStripMenuItem.Text = "Load TMNIST CSV";
+            this.loadTMNISTCSVToolStripMenuItem.Click += new System.EventHandler(this.loadTMNISTCSVToolStripMenuItem_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -395,6 +404,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadMNISTCSVtestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadMNISTByteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadMNISTBytetestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadTMNISTCSVToolStripMenuItem;
     }
 }
 

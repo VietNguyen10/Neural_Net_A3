@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NeuralNet
 {
@@ -28,6 +30,11 @@ namespace NeuralNet
 
         //Neural Network variables
         MNISTLoader mload = new MNISTLoader();
+        TMNISTLoader tload = new TMNISTLoader();
+        double[][] images = null;
+        int[] labels = null;
+        string[] labels_tmnist = null;
+
         //NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
 
         public Main_Form()
@@ -202,26 +209,32 @@ namespace NeuralNet
 
         private void loadMNISTCSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mload.LoadMNISTCSV();
+            (images, labels) = mload.LoadMNISTCSV();
             MessageBox.Show("MNIST dataset loaded successfully.");
         }
 
         private void loadMNISTCSVtestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mload.LoadMNISTCSV_test();
+            (images, labels) = mload.LoadMNISTCSV_test();
             MessageBox.Show("MNIST test loaded successfully.");
         }
 
         private void loadMNISTByteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mload.LoadTrainingDataset();
+            (images, labels) = mload.LoadTrainingDataset();
             MessageBox.Show("MNIST dataset loaded successfully.");
         }
 
         private void loadMNISTBytetestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mload.LoadTestingDataset();
+            (images, labels) = mload.LoadTestingDataset();
             MessageBox.Show("MNIST test loaded successfully.");
+        }
+
+        private void loadTMNISTCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //(images, labels_tmnist) = tload.LoadTMNISTCSV();
+            MessageBox.Show("TMNIST dataset is currently broken. DO NOT USE.");
         }
 
         //////////////////////////////Unused Status Bar items/////////////////////////////////
@@ -263,6 +276,6 @@ namespace NeuralNet
             }
         }
 
-       
+        
     }
 }
