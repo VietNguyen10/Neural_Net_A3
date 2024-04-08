@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NeuralNet
 {
+    /// <summary>
+    /// WHAT IS THIS USED FOR 
+    /// </summary>
     internal class Perceptron
 
     {

@@ -33,6 +33,9 @@ namespace NeuralNet
         private Point previousPoint;
         private Pen drawingPen = new Pen(Brushes.Black, 10);
 
+        //Neural Network variables
+        NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
+
         public Main_Form()
         {
             InitializeComponent();
@@ -86,49 +89,6 @@ namespace NeuralNet
         private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        //Using cut tool as tester.
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            NeuralNet curNeuralNetwork = new NeuralNet(1, 3);
-
-            Console.WriteLine("Synaptic weights before training:");
-            PrintMatrix(curNeuralNetwork.SynapsesMatrix);
-
-            var trainingInputs = new double[,] { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 1 }, { 0, 1, 1 } };
-            var trainingOutputs = NeuralNet.MatrixTranspose(new double[,] { { 0, 1, 1, 0 } });
-
-            curNeuralNetwork.Train(trainingInputs, trainingOutputs, 10000);
-
-            Console.WriteLine("\nSynaptic weights after training:");
-            PrintMatrix(curNeuralNetwork.SynapsesMatrix);
-
-
-            // testing neural networks against a new problem 
-            var output = curNeuralNetwork.Think(new double[,] { { 1, 0, 0 } });
-            Console.WriteLine("\nConsidering new problem [1, 0, 0] => :");
-            PrintMatrix(output);
-
-            Console.Read();
-        }
-
-        
-
-        //Helper for printing the matrix
-        static void PrintMatrix(double[,] matrix)
-        {
-            int rowLength = matrix.GetLength(0);
-            int colLength = matrix.GetLength(1);
-
-            for (int i = 0; i < rowLength; i++)
-            {
-                for (int j = 0; j < colLength; j++)
-                {
-                    Console.Write(string.Format("{0} ", matrix[i, j]));
-                }
-                Console.Write(Environment.NewLine);
-            }
         }
 
         /// <summary>
@@ -254,6 +214,10 @@ namespace NeuralNet
         private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             statusStrip.Visible = statusBarToolStripMenuItem.Checked;
+        }
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
         }
 
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)

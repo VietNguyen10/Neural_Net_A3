@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Drawing;
 
 
 namespace NeuralNet
@@ -9,237 +13,173 @@ namespace NeuralNet
     /// </summary>
     internal class NeuralNet
     {
-        private Random _radomObj;
-
-        public NeuralNet(int synapseMatrixColumns, int synapseMatrixLines)
-        {
-            SynapseMatrixColumns = synapseMatrixColumns;
-            SynapseMatrixLines = synapseMatrixLines;
-
-            _Init();
-        }
-
-        public int SynapseMatrixColumns { get; }
-        public int SynapseMatrixLines { get; }
-        public double[,] SynapsesMatrix { get; private set; }
+        /// <summary>
+		/// The amount of neurons per layer
+		/// </summary>
+		private readonly UInt16[] layerData;
 
         /// <summary>
-        /// Initialize the ramdom object and the matrix of ramdon weights
+        /// The number of layers
         /// </summary>
-        private void _Init()
-        {
-            // make sure that for every instance of the neural network we are geting the same radom values
-            _radomObj = new Random(1);
-            _GenerateSynapsesMatrix();
-        }
+        private readonly Byte layerCount;
 
         /// <summary>
-        /// Generate our matrix with the weight of the synapses
+        /// The global NeuralNetwork randomizer
         /// </summary>
-        private void _GenerateSynapsesMatrix()
-        {
-            SynapsesMatrix = new double[SynapseMatrixLines, SynapseMatrixColumns];
+        private static Random rdm = new Random();
 
-            for (var i = 0; i < SynapseMatrixLines; i++)
+        /// <summary>
+        /// The layers
+        /// </summary>
+        private List<List<Neuron>> layers;
+
+        /// <summary>
+        /// The global NeuralNetwork learning rate
+        /// </summary>
+        private const Single descent = 0.00033F;
+
+        /// <summary>
+        /// The connections between neurons
+        /// </summary>
+        private Dictionary<Neuron, Dictionary<Neuron, Single>> weights;
+
+        public NeuralNet(UInt16[] layerLengths)
+        {
+
+            this.layerData = layerLengths;
+            this.layerCount = (Byte)(this.layerData.Length);
+            this.layers = new List<List<Neuron>>(this.layerCount);
+            this.weights = new Dictionary<Neuron, Dictionary<Neuron, Single>>();
+
+            Byte i = 0;
+            UInt16 j = 0;
+            while (i < this.layerCount)
             {
-                for (var j = 0; j < SynapseMatrixColumns; j++)
+                this.layers.Add(new List<Neuron>(this.layerData[i]));
+                while (j < layerData[i])
                 {
-                    SynapsesMatrix[i, j] = (2 * _radomObj.NextDouble()) - 1;
+                    this.layers[i].Add(new Neuron() { activation = 0, bias =/*(SByte)(NeuralNet.rdm.Next(-14,15))*/0 });
+                    ++j;
                 }
+                ++i;
+                j = 0;
             }
-        }
-
-        /// <summary>
-        /// Calculate the sigmoid of a value
-        /// </summary>
-        /// <returns></returns>
-        private double[,] _CalculateSigmoid(double[,] matrix)
-        {
-
-            int rowLength = matrix.GetLength(0);
-            int colLength = matrix.GetLength(1);
-
-            for (int i = 0; i < rowLength; i++)
+            while (j < (layerCount - 1))
             {
-                for (int j = 0; j < colLength; j++)
+                foreach (Neuron n in this.layers[j])
                 {
-                    var value = matrix[i, j];
-                    matrix[i, j] = 1 / (1 + Math.Exp(value * -1));
+                    this.weights.Add(n, new Dictionary<Neuron, Single>(this.layerData[j + 1]));
+                    foreach (Neuron n0 in this.layers[j + 1])
+                        this.weights[n].Add(n0, (Single)((NeuralNet.rdm.NextDouble() - NeuralNet.rdm.NextDouble()) / 10F));
                 }
+                ++j;
             }
-            return matrix;
         }
 
         /// <summary>
-        /// Calculate the sigmoid derivative of a value
-        /// </summary>
-        /// <returns></returns>
-        private double[,] _CalculateSigmoidDerivative(double[,] matrix)
+		/// Make a prediction
+		/// </summary>
+		/// <param name="input"></param>
+		/// <param name="desired"></param>
+		/// <param name="learn"></param>
+		/// <returns></returns>
+		public List<Byte> makePrediction(IEnumerable<Byte> input, Byte[] desired, Boolean learn, Boolean visualize = false, Action onFail = null)
         {
-            int rowLength = matrix.GetLength(0);
-            int colLength = matrix.GetLength(1);
 
-            for (int i = 0; i < rowLength; i++)
+            //Clear all potential old neuron values
+            foreach (List<Neuron> layer in this.layers.Skip(1))
+                foreach (Neuron nrn in layer)
+                    nrn.activation = 0;
+
+            //Restructure input
+            List<Byte> _input;
+            if (input.GetType() == typeof(List<Byte>))
+                _input = (List<Byte>)input;
+            else _input = new List<Byte>(input);
+
+            //Fill input layers
+            UInt16 i = 0;
+            while (i < this.layerData[0]) /* possible data loss if input.Length>layerData[0] */
             {
-                for (int j = 0; j < colLength; j++)
+
+                this.layers[0][i].activation = _input[i];
+                ++i;
+
+            }
+            i = 0;
+            Single sum = 0;
+
+            while (i < (this.layerCount - 1))
+            {
+
+                foreach (Neuron neuron in this.layers[i + 1])
                 {
-                    var value = matrix[i, j];
-                    matrix[i, j] = value * (1 - value);
+
+                    foreach (Neuron neuron0 in this.layers[i])
+                    {
+                        //Console.WriteLine("Activation:"+neuron0.activation.ToString()+",bias:"+neuron0.bias.ToString()+",weight:"+this.weights[neuron0][neuron].ToString());
+                        sum += (neuron0.activation + neuron0.bias) * (this.weights[neuron0][neuron]) * 0.5F;
+                    }
+
+                    neuron.activation = sum.sigmoid();
+                    //Console.WriteLine("Sum:"+sum.ToString()+",Sigmoided:"+sum.sigmoid().ToString());
+                    sum = 0;
+
                 }
+
+                ++i;
+
             }
-            return matrix;
+
+            if (learn) this.backPropogate(desired, onFail);
+            return this.layers[this.layerCount - 1].Select(x => x.activation).ToList();
         }
 
-        /// <summary>
-        /// Will return the outputs give the set of the inputs
-        /// </summary>
-        public double[,] Think(double[,] inputMatrix)
+        private void backPropogate(Byte[] desiredAnswers, Action onFail)
         {
-            var productOfTheInputsAndWeights = MatrixDotProduct(inputMatrix, SynapsesMatrix);
+            foreach (List<Neuron> layer in this.layers)
+                foreach (Neuron n in layer)
+                    n.toDescend = 0;
 
-            return _CalculateSigmoid(productOfTheInputsAndWeights);
-
-        }
-
-        /// <summary>
-        /// Train the neural network to achieve the output matrix values
-        /// </summary>
-        public void Train(double[,] trainInputMatrix, double[,] trainOutputMatrix, int interactions)
-        {
-            // we run all the interactions
-            for (var i = 0; i < interactions; i++)
+            foreach (Neuron n in this.layers.Last())
+                n.toDescend = (n.activation - desiredAnswers[this.layers.Last().IndexOf(n)]);
+            Byte i = (Byte)(this.layerCount - 2);
+            Single sum = 0F;
+            while (true)
             {
-                // calculate the output
-                var output = Think(trainInputMatrix);
-
-                // calculate the error
-                var error = MatrixSubstract(trainOutputMatrix, output);
-                var curSigmoidDerivative = _CalculateSigmoidDerivative(output);
-                var error_SigmoidDerivative = MatrixProduct(error, curSigmoidDerivative);
-
-                // calculate the adjustment :) 
-                var adjustment = MatrixDotProduct(MatrixTranspose(trainInputMatrix), error_SigmoidDerivative);
-
-                SynapsesMatrix = MatrixSum(SynapsesMatrix, adjustment);
-            }
-        }
-
-        /// <summary>
-        /// Transpose a matrix
-        /// </summary>
-        /// <returns></returns>
-        public static double[,] MatrixTranspose(double[,] matrix)
-        {
-            int w = matrix.GetLength(0);
-            int h = matrix.GetLength(1);
-
-            double[,] result = new double[h, w];
-
-            for (int i = 0; i < w; i++)
-            {
-                for (int j = 0; j < h; j++)
+                foreach (Neuron n in this.layers[i])
                 {
-                    result[j, i] = matrix[i, j];
+                    foreach (Neuron n0 in this.layers[i + 1])
+                        sum += (this.weights[n][n0] * n0.toDescend);
+
+                    n.toDescend = sum * ((Single)(n.activation * n.bias)).sigmoidF();
+                    //					Console.WriteLine("toDescend:"+n.toDescend.ToString()+",sum:"+sum.ToString()+",activation:"+n.activation.ToString()+",bias:"+n.bias.ToString());
+                    try { n.bias -= (SByte)(NeuralNet.descent * (n.toDescend)); }//TODO:: check if this can be better calculated (more specific?)
+                    catch
+                    {
+                        if (onFail != null)
+                            onFail.Invoke();
+                        //						Console.WriteLine("toDescend:"+n.toDescend.ToString()+",sum:"+sum.ToString()+",activation:"+n.activation.ToString()+",bias:"+n.bias.ToString()); 
+                    }
+                    sum = 0F;
                 }
+                if (i == 0) break;
+                --i;
             }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Sum one matrix with another
-        /// </summary>
-        /// <returns></returns>
-        public static double[,] MatrixSum(double[,] matrixa, double[,] matrixb)
-        {
-            var rowsA = matrixa.GetLength(0);
-            var colsA = matrixa.GetLength(1);
-
-            var result = new double[rowsA, colsA];
-
-            for (int i = 0; i < rowsA; i++)
+            i = 0;
+            while (i != (this.layerCount - 1))
             {
-                for (int u = 0; u < colsA; u++)
+                foreach (Neuron n in this.layers[i])
                 {
-                    result[i, u] = matrixa[i, u] + matrixb[i, u];
+                    foreach (Neuron n0 in this.layers[i + 1])
+                    {
+                        //						Single prev=this.weights[n][n0];
+                        this.weights[n][n0] -= (NeuralNet.descent * (n.activation / 255) * n0.toDescend);
+                        //						Console.WriteLine("Old:"+prev.ToString()+",New:"+this.weights[n][n0].ToString()+"descent:"+NeuralNetwork.descent+",activation:"+n.activation+",toDescend:"+n0.toDescend);
+                    }
                 }
+                ++i;
             }
-
-            return result;
         }
-
-        /// <summary>
-        /// Subtract one matrix from another
-        /// </summary>
-        /// <returns></returns>
-        public static double[,] MatrixSubstract(double[,] matrixa, double[,] matrixb)
-        {
-            var rowsA = matrixa.GetLength(0);
-            var colsA = matrixa.GetLength(1);
-
-            var result = new double[rowsA, colsA];
-
-            for (int i = 0; i < rowsA; i++)
-            {
-                for (int u = 0; u < colsA; u++)
-                {
-                    result[i, u] = matrixa[i, u] - matrixb[i, u];
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Multiplication of a matrix
-        /// </summary>
-        /// <returns></returns>
-        public static double[,] MatrixProduct(double[,] matrixa, double[,] matrixb)
-        {
-            var rowsA = matrixa.GetLength(0);
-            var colsA = matrixa.GetLength(1);
-
-            var result = new double[rowsA, colsA];
-
-            for (int i = 0; i < rowsA; i++)
-            {
-                for (int u = 0; u < colsA; u++)
-                {
-                    result[i, u] = matrixa[i, u] * matrixb[i, u];
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Dot Multiplication of a matrix
-        /// </summary>
-        /// <returns></returns>
-        public static double[,] MatrixDotProduct(double[,] matrixa, double[,] matrixb)
-        {
-
-            var rowsA = matrixa.GetLength(0);
-            var colsA = matrixa.GetLength(1);
-
-            var rowsB = matrixb.GetLength(0);
-            var colsB = matrixb.GetLength(1);
-
-            if (colsA != rowsB)
-                throw new Exception("Matrices dimensions don't fit.");
-
-            var result = new double[rowsA, colsB];
-
-            for (int i = 0; i < rowsA; i++)
-            {
-                for (int j = 0; j < colsB; j++)
-                {
-                    for (int k = 0; k < rowsB; k++)
-                        result[i, j] += matrixa[i, k] * matrixb[k, j];
-                }
-            }
-            return result;
-        }
-        //comment for test commit.
     }
 }
