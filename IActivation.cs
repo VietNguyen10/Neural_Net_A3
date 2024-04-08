@@ -14,4 +14,5 @@ namespace NeuralNet
 
         Activation.ActivationType GetActivationType();
     }
+
 }

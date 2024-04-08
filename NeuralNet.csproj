@@ -51,6 +51,8 @@
     <Compile Include="IActivation.cs" />
     <Compile Include="ICost.cs" />
     <Compile Include="Layer.cs" />
+    <Compile Include="LayerSample.cs" />
+    <Compile Include="NeuralNetSample.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Main_Form.cs">
       <SubType>Form</SubType>

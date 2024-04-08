@@ -150,5 +150,6 @@ namespace NeuralNet
                 return ActivationType.Softmax;
             }
         }
+
     }
 }

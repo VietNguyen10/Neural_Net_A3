@@ -41,6 +41,8 @@ namespace NeuralNet
         {
             InitializeComponent();
             InitializeDrawingArea();
+
+            NeuralNet model = new NeuralNet(images.Length, 3/*hiddenSize*/, 10/*outputsize*/);
         }
 
         private void InitializeDrawingArea()
