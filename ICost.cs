@@ -15,4 +15,4 @@ namespace NeuralNet
         Cost.CostType CostFunctionType();
     }
 }
-}
+
