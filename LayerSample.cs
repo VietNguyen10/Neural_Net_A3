@@ -8,7 +8,7 @@ namespace NeuralNet
 {
     internal class LayerSample
     {
-
+        /*
         public readonly int numNodesIn;
         public readonly int numNodesOut;
 
@@ -214,6 +214,6 @@ namespace NeuralNet
                 return y1 * standardDeviation + mean;
             }
         }
-
+        */
     }
 }
