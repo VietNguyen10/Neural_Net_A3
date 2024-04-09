@@ -64,6 +64,7 @@
             this.weightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createWeightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useExistingWeightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
@@ -331,8 +332,8 @@
             // weightsToolStripMenuItem
             // 
             this.weightsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createWeightsToolStripMenuItem,
-            this.useExistingWeightsToolStripMenuItem});
+            this.useExistingWeightsToolStripMenuItem,
+            this.createWeightsToolStripMenuItem});
             this.weightsToolStripMenuItem.Name = "weightsToolStripMenuItem";
             this.weightsToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.weightsToolStripMenuItem.Text = "Weights";
@@ -351,11 +352,21 @@
             this.useExistingWeightsToolStripMenuItem.Text = "Use Existing Weights";
             this.useExistingWeightsToolStripMenuItem.Click += new System.EventHandler(this.useExistingWeightsToolStripMenuItem_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(254, 344);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "label1";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(632, 453);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.testBtn2);
             this.Controls.Add(this.testBtn);
             this.Controls.Add(this.displayAreaLabel);
@@ -417,6 +428,7 @@
         private System.Windows.Forms.ToolStripMenuItem weightsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createWeightsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useExistingWeightsToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
     }
 }
 

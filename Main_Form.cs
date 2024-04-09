@@ -36,7 +36,7 @@ namespace NeuralNet
         string[] labels_tmnist = null;
 
         private Activation.ActivationType currentActivation = Activation.ActivationType.Sigmoid;
-        NeuralNet nnMNIST = new NeuralNet(new int[]{784, 16, 16, 10 });
+        NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 150, 100, 10 });
 
         public Main_Form()
         {
@@ -273,6 +273,7 @@ namespace NeuralNet
             try
             {
                 nnMNIST.LoadWeightsFromFile("../../weights.txt");
+                MessageBox.Show("Weights loaded successfully.");    
             }
             catch (Exception ex)
             {
@@ -314,6 +315,74 @@ namespace NeuralNet
        
         private void testBtn2_Click(object sender, EventArgs e)
         {
+
+            double[] input = ConvertBitmapToInput(drawnBitmap);
+
+            nnMNIST.SetInput(input);
+            nnMNIST.ForwardFeed();
+            int result = nnMNIST.GetMaxNeuronIndex(nnMNIST.numLayers - 1);
+
+            // Display the result
+            label1.Text = result.ToString();
+        }
+
+        private double[] ConvertBitmapToInput(Bitmap bitmap)
+        {
+            // Convert bitmap to grayscale
+            Bitmap grayscaleBitmap = ConvertToGrayscale(bitmap);
+
+            // Resize bitmap to match the input size expected by the neural network
+            Bitmap resizedBitmap = ResizeBitmap(grayscaleBitmap, 28, 28);
+
+            // Flatten the resized bitmap into a 1D array of doubles
+            double[] input = FlattenBitmap(resizedBitmap);
+
+            return input;
+        }
+
+        private Bitmap ConvertToGrayscale(Bitmap bitmap)
+        {
+            // Convert the bitmap to grayscale
+            // Implementation depends on the specific requirements and libraries used
+            // Example:
+            Bitmap grayscaleBitmap = new Bitmap(bitmap.Width, bitmap.Height);
+            for (int x = 0; x < grayscaleBitmap.Width; x++)
+            {
+                for (int y = 0; y < grayscaleBitmap.Height; y++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    int grayValue = (int)(pixelColor.R * 0.3 + pixelColor.G * 0.59 + pixelColor.B * 0.11);
+                    grayscaleBitmap.SetPixel(x, y, Color.FromArgb(grayValue, grayValue, grayValue));
+                }
+            }
+            return grayscaleBitmap;
+        }
+
+        private Bitmap ResizeBitmap(Bitmap bitmap, int width, int height)
+        {
+            // Resize the bitmap to the specified width and height
+            // Implementation depends on the specific requirements and libraries used
+            // Example:
+            Bitmap resizedBitmap = new Bitmap(bitmap, new Size(width, height));
+            return resizedBitmap;
+        }
+
+        private double[] FlattenBitmap(Bitmap bitmap)
+        {
+            // Flatten the bitmap into a 1D array of doubles
+            // Implementation depends on the specific requirements and libraries used
+            // Example:
+            double[] input = new double[bitmap.Width * bitmap.Height];
+            int index = 0;
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    Color pixelColor = bitmap.GetPixel(x, y);
+                    input[index++] = pixelColor.R / 255.0; // Normalize pixel value to range [0, 1]
+                }
+            }
+            return input;
 
         }
     }

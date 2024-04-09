@@ -27,7 +27,13 @@ namespace NeuralNet
             {
                 NetworkLayers[i] = new Layer(numbersOfNeurons[i]);
                 if (i < numLayers - 1)
+                {
                     Weights[i] = new double[numbersOfNeurons[i]][];
+                    for (int j = 0; j < numbersOfNeurons[i]; j++)
+                    {
+                        Weights[i][j] = new double[numbersOfNeurons[i + 1]];
+                    }
+                }
             }
         }
 
@@ -145,6 +151,7 @@ namespace NeuralNet
             Random rnd = new Random();
             for (int i = 0; i < numLayers - 1; i++)
             {
+                Weights[i] = new double[NetworkLayers[i].Neurons.Length][];
                 for (int j = 0; j < NetworkLayers[i].Neurons.Length; j++)
                 {
                     Weights[i][j] = new double[NetworkLayers[i + 1].Neurons.Length];
