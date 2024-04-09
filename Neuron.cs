@@ -11,7 +11,7 @@ namespace NeuralNet
     /// </summary>
     internal class Neuron
     {
-        private readonly IActivation _activation;
+        private  IActivation _activation { get; set; }
         public double Value { get; set; }
         public double Error { get; set; }
         public Neuron(IActivation activation = null)

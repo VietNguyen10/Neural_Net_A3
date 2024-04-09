@@ -36,8 +36,7 @@ namespace NeuralNet
         string[] labels_tmnist = null;
 
         private Activation.ActivationType currentActivation = Activation.ActivationType.Sigmoid;
-
-        //NeuralNet nn = new NeuralNet(new UInt16[]{784, 16, 16, 10}); // 784 input, 16 hidden, 16 hidden, 10 output (0-9 digits)
+        NeuralNet nnMNIST = new NeuralNet(new int[]{784, 16, 16, 10 });
 
         public Main_Form()
         {
@@ -241,47 +240,36 @@ namespace NeuralNet
         private void loadTMNISTCSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //(images, labels_tmnist) = tload.LoadTMNISTCSV();
-            MessageBox.Show("TMNIST dataset is currently broken. DO NOT USE.");
+            MessageBox.Show("TMNIST dataset is currently broken. DO NOT USE. :(");
         }
 
-        //////////////////////////////Unused Status Bar items/////////////////////////////////
-
-        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void sigmoidToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            statusStrip.Visible = statusBarToolStripMenuItem.Checked;
+            currentActivation = Activation.ActivationType.Sigmoid;
+            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
         }
 
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tanHToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            currentActivation = Activation.ActivationType.TanH;
+            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
         }
 
-        private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void reLUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LayoutMdi(MdiLayout.Cascade);
+            currentActivation = Activation.ActivationType.ReLU;
+            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
         }
 
-        private void TileVerticalToolStripMenuItem_Click(object sender, EventArgs e)
+        private void siLUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LayoutMdi(MdiLayout.TileVertical);
+            currentActivation = Activation.ActivationType.SiLU;
+            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
         }
 
-        private void TileHorizontalToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LayoutMdi(MdiLayout.TileHorizontal);
-        }
 
-        private void ArrangeIconsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LayoutMdi(MdiLayout.ArrangeIcons);
-        }
 
-        private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (Form childForm in MdiChildren)
-            {
-                childForm.Close();
-            }
-        }
+        //////////////////////////////Testing button items/////////////////////////////////
 
         private void testBtn_Click(object sender, EventArgs e)
         {
@@ -299,33 +287,10 @@ namespace NeuralNet
             MessageBox.Show("neuron value is: " + neuron.Value);
         }
 
-        private void sigmoidToolStripMenuItem_Click(object sender, EventArgs e)
+       
+        private void testBtn2_Click(object sender, EventArgs e)
         {
-            currentActivation = Activation.ActivationType.Sigmoid;
-            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
 
-            //TODO: Implement activation function change to apply to all layers
-        }
-
-        private void tanHToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentActivation = Activation.ActivationType.TanH;
-            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
-            //TODO: Implement activation function change to apply to all layers
-        }
-
-        private void reLUToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentActivation = Activation.ActivationType.ReLU;
-            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
-            //TODO: Implement activation function change to apply to all layers
-        }
-
-        private void siLUToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentActivation = Activation.ActivationType.SiLU;
-            toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
-            //TODO: Implement activation function change to apply to all layers
         }
     }
 }

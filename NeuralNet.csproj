@@ -47,12 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation.cs" />
-    <Compile Include="Cost.cs" />
     <Compile Include="IActivation.cs" />
-    <Compile Include="ICost.cs" />
     <Compile Include="Layer.cs" />
-    <Compile Include="LayerSample.cs" />
-    <Compile Include="NeuralNetSample.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Main_Form.cs">
       <SubType>Form</SubType>
@@ -65,7 +61,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TMNISTLoader.cs" />
-    <Compile Include="Util.cs" />
     <EmbeddedResource Include="Main_Form.resx">
       <DependentUpon>Main_Form.cs</DependentUpon>
     </EmbeddedResource>
