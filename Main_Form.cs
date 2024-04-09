@@ -325,6 +325,7 @@ namespace NeuralNet
 
             // Display the result
             label1.Text = result.ToString();
+            MessageBox.Show("The result is: " + result);
         }
 
         private double[] ConvertBitmapToInput(Bitmap bitmap)

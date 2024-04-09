@@ -311,7 +311,7 @@
             // 
             // testBtn
             // 
-            this.testBtn.Location = new System.Drawing.Point(380, 344);
+            this.testBtn.Location = new System.Drawing.Point(523, 344);
             this.testBtn.Name = "testBtn";
             this.testBtn.Size = new System.Drawing.Size(75, 45);
             this.testBtn.TabIndex = 12;
@@ -321,11 +321,11 @@
             // 
             // testBtn2
             // 
-            this.testBtn2.Location = new System.Drawing.Point(479, 356);
+            this.testBtn2.Location = new System.Drawing.Point(318, 344);
             this.testBtn2.Name = "testBtn2";
             this.testBtn2.Size = new System.Drawing.Size(75, 45);
             this.testBtn2.TabIndex = 14;
-            this.testBtn2.Text = "Testing Button";
+            this.testBtn2.Text = "Who\'s that pokemon?";
             this.testBtn2.UseVisualStyleBackColor = true;
             this.testBtn2.Click += new System.EventHandler(this.testBtn2_Click);
             // 
