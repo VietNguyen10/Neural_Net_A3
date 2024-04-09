@@ -37,8 +37,6 @@ namespace NeuralNet
             }
         }
 
-        
-
         public void SetInput(double[] values)
         {
             for (int i = 0; i < NetworkLayers[0].Neurons.Length; i++)
@@ -86,15 +84,17 @@ namespace NeuralNet
             }
         }
 
-        public void BackPropagation(int rightResult, double learningRate)
+        public void BackPropagation(int[] labels, double learningRate)
         {
             // Calculate errors for output layer neurons
             for (int i = 0; i < NetworkLayers[numLayers - 1].Neurons.Length; i++)
             {
-                if (rightResult != i)
-                    NetworkLayers[numLayers - 1].Neurons[i].Error = -Math.Pow(NetworkLayers[numLayers - 1].Neurons[i].Value, 2);
+                double[] expectedOutputs = GetExpectedOutputs(labels, i); // Get expected outputs for label i
+                for (int j = 0; j < NetworkLayers[numLayers - 1].Neurons.Length; j++)
+                {
+                    NetworkLayers[numLayers - 1].Neurons[j].Error = NetworkLayers[numLayers - 1].Neurons[j].Value - expectedOutputs[j];
+                }
             }
-            NetworkLayers[numLayers - 1].Neurons[rightResult].Error = Math.Pow(NetworkLayers[numLayers - 1].Neurons[rightResult].Value - 1.0, 2);
 
             // Backpropagate errors through the network
             for (int i = numLayers - 2; i >= 0; i--)
@@ -125,6 +125,19 @@ namespace NeuralNet
                 }
             }
         }
+
+
+        private double[] GetExpectedOutputs(int[] labels, int neuronIndex)
+        {
+            double[] expectedOutputs = new double[NetworkLayers[numLayers - 1].Neurons.Length];
+            for (int i = 0; i < labels.Length; i++)
+            {
+                if (neuronIndex == labels[i])
+                    expectedOutputs[neuronIndex] = 1.0;
+            }
+            return expectedOutputs;
+        }
+
         public static double SigmoidDerivative(double x)
         {
             if (Math.Abs(x - 1) < 1e-9 || Math.Abs(x) < 1e-9) return 0.0;
@@ -135,12 +148,24 @@ namespace NeuralNet
         public int GetMaxNeuronIndex(int layerNumber)
         {
             double[] values = new double[NetworkLayers[layerNumber].Neurons.Length];
+            Console.WriteLine("num of neurons in last layers: \n" + values.Length);
             for (int i = 0; i < values.Length; i++)
             {
                 values[i] = NetworkLayers[layerNumber].Neurons[i].Value;
+                Console.WriteLine(values[i] + "\n");
             }
             double maxValue = values.Max();
             return Array.IndexOf(values, maxValue);
+        }
+
+        public double MeanSquaredError(double[] predictedOutputs, double[] expectedOutputs)
+        {
+            double error = 0.0;
+            for (int i = 0; i < predictedOutputs.Length; i++)
+            {
+                error += Math.Pow(predictedOutputs[i] - expectedOutputs[i], 2);
+            }
+            return error / predictedOutputs.Length;
         }
 
         /// <summary>
@@ -202,5 +227,23 @@ namespace NeuralNet
                 }
             }
         }
+
+        public double CalculateMeanSquaredError(double[] predictedOutput, double[] targetOutput)
+        {
+            if (predictedOutput.Length != targetOutput.Length)
+            {
+                throw new ArgumentException("The length of predictedOutput and targetOutput must be the same.");
+            }
+
+            double sumSquaredError = 0.0;
+            for (int i = 0; i < predictedOutput.Length; i++)
+            {
+                double error = predictedOutput[i] - targetOutput[i];
+                sumSquaredError += error * error;
+            }
+
+            return sumSquaredError / predictedOutput.Length;
+        }
+
     }
 }

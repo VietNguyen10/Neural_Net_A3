@@ -16,6 +16,7 @@ using Accord.MachineLearning;
 using Accord.Imaging;
 using Accord.Genetic;
 using System.Numerics;
+using System.Net.Mail;
 
 namespace NeuralNet
 {
@@ -43,7 +44,9 @@ namespace NeuralNet
         string[] labels_tmnist = null;
 
         private Activation.ActivationType currentActivation = Activation.ActivationType.Sigmoid;
-        NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 250, 100, 10 });
+        //NeuralNet nnMNIST;
+        //NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 250, 100, 10 });
+        NeuralNet nnMNIST = new NeuralNet(new int[] { 784, 100, 100, 10 });
 
 
         public Main_Form()
@@ -308,17 +311,53 @@ namespace NeuralNet
 
         private void testBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("THERES NOTHING HERE button clicked.");
+            nnMNIST = new NeuralNet(new int[] { 784, 100, 100, 10 });
+
+            double[] inputImg = FlattenImage(images);
+            nnMNIST.SetInput(inputImg);
+            Console.WriteLine("Input set successfully.");
+           
+            nnMNIST.SetRandomWeights();
+            Console.WriteLine("Weights Randomized successfully.");
+
+            nnMNIST.SaveWeightsToFile("../../weights.txt");
+            Console.WriteLine("Weights Saved successfully.");
+            
+            nnMNIST.LoadWeightsFromFile("../../weights.txt");
+            Console.WriteLine("Weights loaded successfully.");
+            
+            nnMNIST.ForwardFeed();
+            Console.WriteLine("Forward feed completed.");
+            
+            nnMNIST.BackPropagation(labels, 0.1);
+            Console.WriteLine("Backpropagation completed.");
+            
+            nnMNIST.LoadWeightsFromFile("../../weights.txt");
+            Console.WriteLine("New Weights Loaded");
         }
 
-       
-        private void testBtn2_Click(object sender, EventArgs e)
+
+        // Function to flatten a 2D array into a 1D array
+        private double[] FlattenImage(double[][] image)
         {
+            int rows = image.Length;
+            int cols = image[0].Length;
+            double[] flattenedImage = new double[rows * cols];
 
-            double[] input = ConvertBitmapToInput(drawnBitmap);
+            int index = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    flattenedImage[index++] = image[i][j];
+                }
+            }
 
-            nnMNIST.SetInput(input);
-            nnMNIST.ForwardFeed();
+            return flattenedImage;
+        }
+
+        private void whatPokemon_Click(object sender, EventArgs e)
+        {
             int result = nnMNIST.GetMaxNeuronIndex(nnMNIST.numLayers - 1);
 
             // Display the result
@@ -385,6 +424,7 @@ namespace NeuralNet
             return input;
 
         }
+
 
     }
 }

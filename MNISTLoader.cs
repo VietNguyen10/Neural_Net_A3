@@ -58,8 +58,8 @@ namespace NeuralNet
         public (double[][], int[]) LoadMNISTCSV_test()
         {
             // Read lines from CSV file
-            string[] lines = File.ReadAllLines(_filePath_test).Skip(1).ToArray();
-           //string[] lines = File.ReadAllLines(file_sm).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(_filePath_test).Skip(1).ToArray();
+            string[] lines = File.ReadAllLines(file_sm).Skip(1).ToArray();
             //string[] lines = File.ReadAllLines(file_m).Skip(1).ToArray();
             //string[] lines = File.ReadAllLines(file_l).Skip(1).ToArray();
 
