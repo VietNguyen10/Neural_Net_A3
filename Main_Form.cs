@@ -329,7 +329,7 @@ namespace NeuralNet
             nnMNIST.ForwardFeed();
             Console.WriteLine("Forward feed completed.");
             
-            nnMNIST.BackPropagation(labels, 0.1);
+            nnMNIST.BackPropagation(labels, 0.05);
             Console.WriteLine("Backpropagation completed.");
             
             nnMNIST.LoadWeightsFromFile("../../weights.txt");

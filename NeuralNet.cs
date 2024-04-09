@@ -145,6 +145,7 @@ namespace NeuralNet
             return result;
         }
 
+        //Grabs highest value from chosen index.
         public int GetMaxNeuronIndex(int layerNumber)
         {
             double[] values = new double[NetworkLayers[layerNumber].Neurons.Length];
