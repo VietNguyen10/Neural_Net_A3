@@ -9,6 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using Accord;
+using Accord.Math;
+using Accord.Neuro;
+using Accord.MachineLearning;
+using Accord.Imaging;
+using Accord.Genetic;
+using System.Numerics;
 
 namespace NeuralNet
 {
@@ -25,7 +32,7 @@ namespace NeuralNet
         private Bitmap drawnBitmap;
         private Graphics drawnGraphics;
         private bool isDrawing = false;
-        private Point previousPoint;
+        private System.Drawing.Point previousPoint;
         readonly private Pen drawingPen = new Pen(Brushes.Black, 10);
 
         //Neural Network variables
@@ -38,15 +45,13 @@ namespace NeuralNet
         private Activation.ActivationType currentActivation = Activation.ActivationType.Sigmoid;
         NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 250, 100, 10 });
 
+
         public Main_Form()
         {
             InitializeComponent();
             InitializeDrawingArea();
 
             toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
-
-            //Commenting out so it doesn't break things. Uncomment to test
-            //NeuralNet model = new NeuralNet(images.Length, 3/*hiddenSize*/, 10/*outputsize*/);
         }
 
         private void InitializeDrawingArea()
@@ -55,7 +60,7 @@ namespace NeuralNet
             drawnGraphics = Graphics.FromImage(drawnBitmap);
             drawnGraphics.Clear(Color.White);
             drawingArea.Image = drawnBitmap;
-            previousPoint = Point.Empty;
+            previousPoint = System.Drawing.Point.Empty;    
         }
 
         private void ShowNewForm(object sender, EventArgs e)
@@ -121,10 +126,10 @@ namespace NeuralNet
                 drawnGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
 
                 drawingArea.Invalidate();
-                drawingArea.Update();
-                previousPoint = e.Location;
+                previousPoint = e.Location; 
             }
         }
+
 
         private void drawingArea_MouseUp(object sender, MouseEventArgs e)
         {
@@ -212,7 +217,6 @@ namespace NeuralNet
             displayArea.Image = scaledImage;
         }
 
-
         private void loadMNISTCSVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             (images, labels) = mload.LoadMNISTCSV();
@@ -295,22 +299,16 @@ namespace NeuralNet
             }
         }
 
+        private void showDisplayBox_CheckedChanged(object sender, EventArgs e)
+        {
+            groupDisplay.Visible = !groupDisplay.Visible;
+        }
+
         //////////////////////////////Testing button items/////////////////////////////////
 
         private void testBtn_Click(object sender, EventArgs e)
         {
-            Activation.ActivationType activationType = Activation.ActivationType.Sigmoid; // Choose the activation function type
-            IActivation activation = Activation.GetActivationFromType(activationType);
-            Neuron neuron = new Neuron(activation);
-
-            // Set value
-            neuron.Value = 233;
-
-            // Activate the neuron using the chosen activation function
-            neuron.Activation();
-
-            // Now the neuron's value is activated using the chosen activation function
-            MessageBox.Show("neuron value is: " + neuron.Value);
+            MessageBox.Show("THERES NOTHING HERE button clicked.");
         }
 
        
@@ -387,5 +385,6 @@ namespace NeuralNet
             return input;
 
         }
+
     }
 }

@@ -4,7 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Accord.Math;
+using Accord.Math.Optimization.Losses;
+using Accord.Neuro;
+using Accord.MachineLearning;
+using Accord.Imaging;
+using Accord.Genetic;
+using System.Numerics;
+        
 namespace NeuralNet
 {
     /// <summary>
@@ -15,6 +22,9 @@ namespace NeuralNet
     {
         private readonly string _filePath = "../../mnist_train.csv";
         private readonly string _filePath_test = "../../mnist_test.csv";
+        private string file_sm = "../../handwritten_digits_small.csv";
+        private string file_m = "../../handwritten_digits_medium.csv";   
+        private string file_l = "../../handwritten_digits_large.csv";   
 
         // File paths for MNIST dataset
         static string trainImagesPath = "../../train-images.idx3-ubyte";
@@ -33,8 +43,10 @@ namespace NeuralNet
 
         public (double[][], int[]) LoadMNISTCSV()
         {
-            // Read lines from CSV file
-            string[] lines = File.ReadAllLines(_filePath).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(_filePath_test).Skip(1).ToArray();
+            string[] lines = File.ReadAllLines(file_sm).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(file_m).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(file_l).Skip(1).ToArray();
 
             // Extract labels and images from lines
             int[] labels = lines.Select(line => int.Parse(line.Split(',')[0])).ToArray();
@@ -47,6 +59,10 @@ namespace NeuralNet
         {
             // Read lines from CSV file
             string[] lines = File.ReadAllLines(_filePath_test).Skip(1).ToArray();
+           //string[] lines = File.ReadAllLines(file_sm).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(file_m).Skip(1).ToArray();
+            //string[] lines = File.ReadAllLines(file_l).Skip(1).ToArray();
+
 
             // Extract labels and images from lines
             int[] labels = lines.Select(line => int.Parse(line.Split(',')[0])).ToArray();
