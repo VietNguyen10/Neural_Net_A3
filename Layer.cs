@@ -9,31 +9,15 @@ namespace NeuralNet
 {
     internal class Layer
     {
-        double[,] weights;
-        double[] biases;
-        IActivation activationFunction;
+        public Neuron[] Neurons { get; set; }
+        public double[] Biases { get; set; }
 
-        public Layer(int inputSize, int outputSize, IActivation activationFunction = null)
+        public Layer(int numberOfNeurons)
         {
-            this.weights = new double[outputSize, inputSize];
-            this.biases = new double[outputSize];
-            this.activationFunction = activationFunction ?? Activation.GetActivationFromType(Activation.ActivationType.Sigmoid);
-            InitializeWeights();
+            Neurons = new Neuron[numberOfNeurons];
+            Biases = new double[numberOfNeurons];
+            for (int i = 0; i < numberOfNeurons; i++)
+                Neurons[i] = new Neuron();
         }
-
-        private void InitializeWeights()
-        {
-            Random random = new Random();
-            for (int i = 0; i < weights.GetLength(0); i++)
-            {
-                for (int j = 0; j < weights.GetLength(1); j++)
-                {
-                    weights[i, j] = random.NextDouble(); // Initialize weights randomly
-                }
-                biases[i] = random.NextDouble(); // Initialize biases randomly
-            }
-        }
-
-        //TODO: Implement backpropagation
     }
 }

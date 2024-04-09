@@ -14,9 +14,9 @@ namespace NeuralNet
         private readonly IActivation _activation;
         public double Value { get; set; }
         public double Error { get; set; }
-        public Neuron(IActivation activation)
+        public Neuron(IActivation activation = null)
         {
-            _activation = activation;
+            _activation = activation ?? new Activation.Sigmoid();
         }
 
         public void Activation()

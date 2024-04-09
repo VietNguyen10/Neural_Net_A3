@@ -333,7 +333,7 @@
             // 
             // clearDrawingBtn
             // 
-            this.clearDrawingBtn.Location = new System.Drawing.Point(93, 359);
+            this.clearDrawingBtn.Location = new System.Drawing.Point(93, 335);
             this.clearDrawingBtn.Name = "clearDrawingBtn";
             this.clearDrawingBtn.Size = new System.Drawing.Size(75, 38);
             this.clearDrawingBtn.TabIndex = 5;
@@ -343,7 +343,7 @@
             // 
             // submitDrawingBtn
             // 
-            this.submitDrawingBtn.Location = new System.Drawing.Point(12, 359);
+            this.submitDrawingBtn.Location = new System.Drawing.Point(12, 335);
             this.submitDrawingBtn.Name = "submitDrawingBtn";
             this.submitDrawingBtn.Size = new System.Drawing.Size(75, 38);
             this.submitDrawingBtn.TabIndex = 6;
@@ -353,7 +353,7 @@
             // 
             // drawingArea
             // 
-            this.drawingArea.Location = new System.Drawing.Point(12, 73);
+            this.drawingArea.Location = new System.Drawing.Point(9, 49);
             this.drawingArea.Name = "drawingArea";
             this.drawingArea.Size = new System.Drawing.Size(280, 280);
             this.drawingArea.TabIndex = 4;
@@ -365,7 +365,7 @@
             // drawingAreaLabel
             // 
             this.drawingAreaLabel.AutoSize = true;
-            this.drawingAreaLabel.Location = new System.Drawing.Point(12, 57);
+            this.drawingAreaLabel.Location = new System.Drawing.Point(9, 33);
             this.drawingAreaLabel.Name = "drawingAreaLabel";
             this.drawingAreaLabel.Size = new System.Drawing.Size(71, 13);
             this.drawingAreaLabel.TabIndex = 8;
@@ -373,7 +373,7 @@
             // 
             // displayArea
             // 
-            this.displayArea.Location = new System.Drawing.Point(321, 73);
+            this.displayArea.Location = new System.Drawing.Point(318, 49);
             this.displayArea.Name = "displayArea";
             this.displayArea.Size = new System.Drawing.Size(280, 280);
             this.displayArea.TabIndex = 9;
@@ -382,7 +382,7 @@
             // displayAreaLabel
             // 
             this.displayAreaLabel.AutoSize = true;
-            this.displayAreaLabel.Location = new System.Drawing.Point(318, 57);
+            this.displayAreaLabel.Location = new System.Drawing.Point(315, 33);
             this.displayAreaLabel.Name = "displayAreaLabel";
             this.displayAreaLabel.Size = new System.Drawing.Size(66, 13);
             this.displayAreaLabel.TabIndex = 10;
@@ -390,7 +390,7 @@
             // 
             // testBtn
             // 
-            this.testBtn.Location = new System.Drawing.Point(383, 368);
+            this.testBtn.Location = new System.Drawing.Point(380, 344);
             this.testBtn.Name = "testBtn";
             this.testBtn.Size = new System.Drawing.Size(75, 45);
             this.testBtn.TabIndex = 12;

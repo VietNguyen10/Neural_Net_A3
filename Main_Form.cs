@@ -45,6 +45,7 @@ namespace NeuralNet
             InitializeDrawingArea();
 
             toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
+
             //Commenting out so it doesn't break things. Uncomment to test
             //NeuralNet model = new NeuralNet(images.Length, 3/*hiddenSize*/, 10/*outputsize*/);
         }
