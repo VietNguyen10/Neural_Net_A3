@@ -34,21 +34,6 @@ namespace NeuralNet
             }
         }
 
-        // Forward propagation function
-        public double[] Forward(double[] inputs)
-        {
-            int numNeurons = inputs.Length;
-            double[] outputs = new double[numNeurons];
-
-            for (int i = 0; i < numNeurons; i++)
-            {
-                // Activate each neuron in the layer
-                outputs[i] = activationFunction.Activate(inputs, i);
-            }
-
-            return outputs;
-        }
-
         //TODO: Implement backpropagation
     }
 }

@@ -42,6 +42,11 @@
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadMNISTCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadMNISTCSVtestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadMNISTByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadMNISTBytetestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadTMNISTCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +54,11 @@
             this.tileHorizontalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.arrangeIconsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activationTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sigmoidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tanHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reLUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.siLUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -58,11 +68,7 @@
             this.drawingAreaLabel = new System.Windows.Forms.Label();
             this.displayArea = new System.Windows.Forms.PictureBox();
             this.displayAreaLabel = new System.Windows.Forms.Label();
-            this.loadMNISTCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadMNISTCSVtestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadMNISTByteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadMNISTBytetestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadTMNISTCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testBtn = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
@@ -75,7 +81,8 @@
             this.fileMenu,
             this.viewMenu,
             this.toolsMenu,
-            this.windowsMenu});
+            this.windowsMenu,
+            this.activationTypesToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
             this.menuStrip.Name = "menuStrip";
@@ -104,7 +111,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
@@ -114,14 +121,14 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFile);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(143, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -129,23 +136,23 @@
             this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(143, 6);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolsStripMenuItem_Click);
             // 
@@ -163,7 +170,7 @@
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.statusBarToolStripMenuItem.Text = "&Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.StatusBarToolStripMenuItem_Click);
             // 
@@ -178,6 +185,41 @@
             this.toolsMenu.Name = "toolsMenu";
             this.toolsMenu.Size = new System.Drawing.Size(46, 20);
             this.toolsMenu.Text = "&Tools";
+            // 
+            // loadMNISTCSVToolStripMenuItem
+            // 
+            this.loadMNISTCSVToolStripMenuItem.Name = "loadMNISTCSVToolStripMenuItem";
+            this.loadMNISTCSVToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadMNISTCSVToolStripMenuItem.Text = "Load MNIST CSV";
+            this.loadMNISTCSVToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTCSVToolStripMenuItem_Click);
+            // 
+            // loadMNISTCSVtestToolStripMenuItem
+            // 
+            this.loadMNISTCSVtestToolStripMenuItem.Name = "loadMNISTCSVtestToolStripMenuItem";
+            this.loadMNISTCSVtestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadMNISTCSVtestToolStripMenuItem.Text = "Load MNIST CSV_test";
+            this.loadMNISTCSVtestToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTCSVtestToolStripMenuItem_Click);
+            // 
+            // loadMNISTByteToolStripMenuItem
+            // 
+            this.loadMNISTByteToolStripMenuItem.Name = "loadMNISTByteToolStripMenuItem";
+            this.loadMNISTByteToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadMNISTByteToolStripMenuItem.Text = "Load MNIST byte";
+            this.loadMNISTByteToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTByteToolStripMenuItem_Click);
+            // 
+            // loadMNISTBytetestToolStripMenuItem
+            // 
+            this.loadMNISTBytetestToolStripMenuItem.Name = "loadMNISTBytetestToolStripMenuItem";
+            this.loadMNISTBytetestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadMNISTBytetestToolStripMenuItem.Text = "Load MNIST byte_test";
+            this.loadMNISTBytetestToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTBytetestToolStripMenuItem_Click);
+            // 
+            // loadTMNISTCSVToolStripMenuItem
+            // 
+            this.loadTMNISTCSVToolStripMenuItem.Name = "loadTMNISTCSVToolStripMenuItem";
+            this.loadTMNISTCSVToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.loadTMNISTCSVToolStripMenuItem.Text = "Load TMNIST CSV";
+            this.loadTMNISTCSVToolStripMenuItem.Click += new System.EventHandler(this.loadTMNISTCSVToolStripMenuItem_Click);
             // 
             // windowsMenu
             // 
@@ -233,6 +275,45 @@
             this.arrangeIconsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.arrangeIconsToolStripMenuItem.Text = "&Arrange Icons";
             this.arrangeIconsToolStripMenuItem.Click += new System.EventHandler(this.ArrangeIconsToolStripMenuItem_Click);
+            // 
+            // activationTypesToolStripMenuItem
+            // 
+            this.activationTypesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sigmoidToolStripMenuItem,
+            this.tanHToolStripMenuItem,
+            this.reLUToolStripMenuItem,
+            this.siLUToolStripMenuItem});
+            this.activationTypesToolStripMenuItem.Name = "activationTypesToolStripMenuItem";
+            this.activationTypesToolStripMenuItem.Size = new System.Drawing.Size(105, 20);
+            this.activationTypesToolStripMenuItem.Text = "Activation Types";
+            // 
+            // sigmoidToolStripMenuItem
+            // 
+            this.sigmoidToolStripMenuItem.Name = "sigmoidToolStripMenuItem";
+            this.sigmoidToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sigmoidToolStripMenuItem.Text = "Sigmoid";
+            this.sigmoidToolStripMenuItem.Click += new System.EventHandler(this.sigmoidToolStripMenuItem_Click);
+            // 
+            // tanHToolStripMenuItem
+            // 
+            this.tanHToolStripMenuItem.Name = "tanHToolStripMenuItem";
+            this.tanHToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tanHToolStripMenuItem.Text = "TanH";
+            this.tanHToolStripMenuItem.Click += new System.EventHandler(this.tanHToolStripMenuItem_Click);
+            // 
+            // reLUToolStripMenuItem
+            // 
+            this.reLUToolStripMenuItem.Name = "reLUToolStripMenuItem";
+            this.reLUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reLUToolStripMenuItem.Text = "ReLU";
+            this.reLUToolStripMenuItem.Click += new System.EventHandler(this.reLUToolStripMenuItem_Click);
+            // 
+            // siLUToolStripMenuItem
+            // 
+            this.siLUToolStripMenuItem.Name = "siLUToolStripMenuItem";
+            this.siLUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.siLUToolStripMenuItem.Text = "SiLU";
+            this.siLUToolStripMenuItem.Click += new System.EventHandler(this.siLUToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -307,46 +388,22 @@
             this.displayAreaLabel.TabIndex = 10;
             this.displayAreaLabel.Text = "Display Area";
             // 
-            // loadMNISTCSVToolStripMenuItem
+            // testBtn
             // 
-            this.loadMNISTCSVToolStripMenuItem.Name = "loadMNISTCSVToolStripMenuItem";
-            this.loadMNISTCSVToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.loadMNISTCSVToolStripMenuItem.Text = "Load MNIST CSV";
-            this.loadMNISTCSVToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTCSVToolStripMenuItem_Click);
-            // 
-            // loadMNISTCSVtestToolStripMenuItem
-            // 
-            this.loadMNISTCSVtestToolStripMenuItem.Name = "loadMNISTCSVtestToolStripMenuItem";
-            this.loadMNISTCSVtestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.loadMNISTCSVtestToolStripMenuItem.Text = "Load MNIST CSV_test";
-            this.loadMNISTCSVtestToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTCSVtestToolStripMenuItem_Click);
-            // 
-            // loadMNISTByteToolStripMenuItem
-            // 
-            this.loadMNISTByteToolStripMenuItem.Name = "loadMNISTByteToolStripMenuItem";
-            this.loadMNISTByteToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.loadMNISTByteToolStripMenuItem.Text = "Load MNIST byte";
-            this.loadMNISTByteToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTByteToolStripMenuItem_Click);
-            // 
-            // loadMNISTBytetestToolStripMenuItem
-            // 
-            this.loadMNISTBytetestToolStripMenuItem.Name = "loadMNISTBytetestToolStripMenuItem";
-            this.loadMNISTBytetestToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.loadMNISTBytetestToolStripMenuItem.Text = "Load MNIST byte_test";
-            this.loadMNISTBytetestToolStripMenuItem.Click += new System.EventHandler(this.loadMNISTBytetestToolStripMenuItem_Click);
-            // 
-            // loadTMNISTCSVToolStripMenuItem
-            // 
-            this.loadTMNISTCSVToolStripMenuItem.Name = "loadTMNISTCSVToolStripMenuItem";
-            this.loadTMNISTCSVToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.loadTMNISTCSVToolStripMenuItem.Text = "Load TMNIST CSV";
-            this.loadTMNISTCSVToolStripMenuItem.Click += new System.EventHandler(this.loadTMNISTCSVToolStripMenuItem_Click);
+            this.testBtn.Location = new System.Drawing.Point(383, 368);
+            this.testBtn.Name = "testBtn";
+            this.testBtn.Size = new System.Drawing.Size(75, 45);
+            this.testBtn.TabIndex = 12;
+            this.testBtn.Text = "Testing Button";
+            this.testBtn.UseVisualStyleBackColor = true;
+            this.testBtn.Click += new System.EventHandler(this.testBtn_Click);
             // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(632, 453);
+            this.Controls.Add(this.testBtn);
             this.Controls.Add(this.displayAreaLabel);
             this.Controls.Add(this.displayArea);
             this.Controls.Add(this.drawingAreaLabel);
@@ -405,6 +462,12 @@
         private System.Windows.Forms.ToolStripMenuItem loadMNISTByteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadMNISTBytetestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadTMNISTCSVToolStripMenuItem;
+        private System.Windows.Forms.Button testBtn;
+        private System.Windows.Forms.ToolStripMenuItem activationTypesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sigmoidToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tanHToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reLUToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem siLUToolStripMenuItem;
     }
 }
 

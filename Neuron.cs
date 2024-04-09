@@ -11,21 +11,18 @@ namespace NeuralNet
     /// </summary>
     internal class Neuron
     {
-        /// <summary>
-		/// The value of the neuron
-		/// </summary>
-		public Byte activation;
+        private readonly IActivation _activation;
+        public double Value { get; set; }
+        public double Error { get; set; }
+        public Neuron(IActivation activation)
+        {
+            _activation = activation;
+        }
 
-        /// <summary>
-        /// The 'offset' of the neuron
-        /// </summary>
-        public SByte bias;
-
-        /// <summary>
-        /// The multiplier to modify the bias and weights by when learning
-        /// </summary>
-        public Single toDescend;
-
+        public void Activation()
+        {
+            Value = _activation.Activate(Value);
+        }
 
     }
 }

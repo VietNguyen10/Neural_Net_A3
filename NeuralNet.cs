@@ -14,21 +14,39 @@ namespace NeuralNet
     internal class NeuralNet
     {
         private Layer[] layers;
+        public int Layers { get; set; }
+        public Neuron[][] Neurons { get; set; }
+        public double[][][] Weights { get; set; }
 
         public NeuralNet(int inputSize, int hiddenSize, int outputSize)
         {
             this.layers = new Layer[2]; // For simplicity, we use only one hidden layer
             layers[0] = new Layer(inputSize, hiddenSize, Activation.GetActivationFromType(Activation.ActivationType.ReLU));
-            layers[1] = new Layer(hiddenSize, outputSize, Activation.GetActivationFromType(Activation.ActivationType.Softmax));
+            layers[1] = new Layer(hiddenSize, outputSize, Activation.GetActivationFromType(Activation.ActivationType.Sigmoid));
         }
-        public double[] Forward(double[] input)
+        public void ForwardFeed()
         {
-            double[] output = input;
-            foreach (Layer layer in layers)
+            for (int k = 1; k < Layers; k++)
             {
-                output = layer.Forward(output);
+                for (int i = 0; i < Neurons[k].Length; i++)
+                {
+                    Neurons[k][i].Value = 0;
+                    for (int j = 0; j < Neurons[k - 1].Length; j++)
+                        Neurons[k][i].Value += Neurons[k - 1][j].Value * Weights[k - 1][j][i];
+                    Neurons[k][i].Activation();
+                }
             }
-            return output;
+        }
+
+        public void ForwardFeed(int layerNumber)
+        {
+            for (int i = 0; i < Neurons[layerNumber].Length; i++)
+            {
+                Neurons[layerNumber][i].Value = 0;
+                for (int j = 0; j < Neurons[layerNumber - 1].Length; j++)
+                    Neurons[layerNumber][i].Value += Neurons[layerNumber - 1][j].Value * Weights[layerNumber - 1][j][i];
+                Neurons[layerNumber][i].Activation();
+            }
         }
     }
 
