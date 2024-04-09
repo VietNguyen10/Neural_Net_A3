@@ -268,6 +268,30 @@ namespace NeuralNet
         }
 
 
+        private void useExistingWeightsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                nnMNIST.LoadWeightsFromFile("../../weights.txt");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading weights: " + ex.Message);
+            }
+        }
+
+        private void createWeightsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                nnMNIST.SetRandomWeights();
+                nnMNIST.SaveWeightsToFile("../../weights.txt");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating weights: " + ex.Message);
+            }
+        }
 
         //////////////////////////////Testing button items/////////////////////////////////
 

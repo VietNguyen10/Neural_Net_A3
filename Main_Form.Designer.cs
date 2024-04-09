@@ -61,6 +61,9 @@
             this.displayAreaLabel = new System.Windows.Forms.Label();
             this.testBtn = new System.Windows.Forms.Button();
             this.testBtn2 = new System.Windows.Forms.Button();
+            this.weightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createWeightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useExistingWeightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
@@ -72,7 +75,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.toolsMenu,
-            this.activationTypesToolStripMenuItem});
+            this.activationTypesToolStripMenuItem,
+            this.weightsToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(632, 24);
@@ -324,6 +328,29 @@
             this.testBtn2.UseVisualStyleBackColor = true;
             this.testBtn2.Click += new System.EventHandler(this.testBtn2_Click);
             // 
+            // weightsToolStripMenuItem
+            // 
+            this.weightsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createWeightsToolStripMenuItem,
+            this.useExistingWeightsToolStripMenuItem});
+            this.weightsToolStripMenuItem.Name = "weightsToolStripMenuItem";
+            this.weightsToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.weightsToolStripMenuItem.Text = "Weights";
+            // 
+            // createWeightsToolStripMenuItem
+            // 
+            this.createWeightsToolStripMenuItem.Name = "createWeightsToolStripMenuItem";
+            this.createWeightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.createWeightsToolStripMenuItem.Text = "Create Weights";
+            this.createWeightsToolStripMenuItem.Click += new System.EventHandler(this.createWeightsToolStripMenuItem_Click);
+            // 
+            // useExistingWeightsToolStripMenuItem
+            // 
+            this.useExistingWeightsToolStripMenuItem.Name = "useExistingWeightsToolStripMenuItem";
+            this.useExistingWeightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.useExistingWeightsToolStripMenuItem.Text = "Use Existing Weights";
+            this.useExistingWeightsToolStripMenuItem.Click += new System.EventHandler(this.useExistingWeightsToolStripMenuItem_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -387,6 +414,9 @@
         private System.Windows.Forms.ToolStripMenuItem reLUToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem siLUToolStripMenuItem;
         private System.Windows.Forms.Button testBtn2;
+        private System.Windows.Forms.ToolStripMenuItem weightsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createWeightsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useExistingWeightsToolStripMenuItem;
     }
 }
 

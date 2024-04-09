@@ -138,7 +138,7 @@ namespace NeuralNet
         }
 
         /// <summary>
-        /// Weight related methods
+        /// Weight related
         /// </summary>
         public void SetRandomWeights()
         {
