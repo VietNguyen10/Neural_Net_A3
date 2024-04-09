@@ -36,7 +36,7 @@ namespace NeuralNet
         string[] labels_tmnist = null;
 
         private Activation.ActivationType currentActivation = Activation.ActivationType.Sigmoid;
-        NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 150, 100, 10 });
+        NeuralNet nnMNIST = new NeuralNet(new int[]{ 784, 250, 100, 10 });
 
         public Main_Form()
         {
@@ -287,6 +287,7 @@ namespace NeuralNet
             {
                 nnMNIST.SetRandomWeights();
                 nnMNIST.SaveWeightsToFile("../../weights.txt");
+                MessageBox.Show("Weights created successfully.");
             }
             catch (Exception ex)
             {
