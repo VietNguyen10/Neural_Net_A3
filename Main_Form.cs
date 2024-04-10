@@ -51,6 +51,10 @@ namespace NeuralNet
             InitializeComponent();
             InitializeDrawingArea();
 
+
+            learnRateTextBox.Text = AccordNeuralNet.LearnRate.ToString();
+            numEpochTextBox.Text = AccordNeuralNet.NumEpochs.ToString();
+
             toolStripStatusLabel.Text = "Current Activation: " + currentActivation.ToString();
         }
 
@@ -383,7 +387,7 @@ namespace NeuralNet
 
         private void testBtn_Click(object sender, EventArgs e)
         {
-            AccordNeuralNet.theFunction();
+            AccordNeuralNet.Train();
         }
 
         private void whatPokemon_Click(object sender, EventArgs e)
@@ -453,6 +457,46 @@ namespace NeuralNet
             }
             return input;
 
+        }
+
+        private void learnRateBtn_Click(object sender, EventArgs e)
+        {
+            if (double.TryParse(learnRateTextBox.Text, out double newLearnRate))
+            {
+                if (newLearnRate >= 0 && newLearnRate <= 1)
+                {
+                    AccordNeuralNet.LearnRate = newLearnRate;
+                    MessageBox.Show("Learning rate set to: " + newLearnRate, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid input. Please enter a number between 0 and 1.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid input. Please enter a valid number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void numEpochBtn_Click(object sender, EventArgs e)
+        {
+            if (int.TryParse(numEpochTextBox.Text, out int newNumEpoch))
+            {
+                if (newNumEpoch >= 0)
+                {
+                    AccordNeuralNet.NumEpochs = newNumEpoch;
+                    MessageBox.Show("Number of Epochs set to: " + newNumEpoch, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid input. Please enter a number larger than 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid input. Please enter a valid number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

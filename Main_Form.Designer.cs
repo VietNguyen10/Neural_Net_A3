@@ -67,6 +67,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupDisplay = new System.Windows.Forms.GroupBox();
             this.showDisplayBox = new System.Windows.Forms.CheckBox();
+            this.learnRateTextBox = new System.Windows.Forms.TextBox();
+            this.learnRateLabel = new System.Windows.Forms.Label();
+            this.learnRateBtn = new System.Windows.Forms.Button();
+            this.numEpochLabel = new System.Windows.Forms.Label();
+            this.numEpochTextBox = new System.Windows.Forms.TextBox();
+            this.numEpochBtn = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
@@ -110,7 +116,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
@@ -120,14 +126,14 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFile);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(181, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -135,23 +141,23 @@
             this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.saveToolStripMenuItem.Text = "&Save";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(181, 6);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolsStripMenuItem_Click);
             // 
@@ -352,7 +358,7 @@
             // testBtn2
             // 
             this.testBtn2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.testBtn2.Location = new System.Drawing.Point(232, 294);
+            this.testBtn2.Location = new System.Drawing.Point(228, 293);
             this.testBtn2.Name = "testBtn2";
             this.testBtn2.Size = new System.Drawing.Size(75, 45);
             this.testBtn2.TabIndex = 14;
@@ -363,7 +369,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(186, 355);
+            this.label1.Location = new System.Drawing.Point(447, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 15;
@@ -398,11 +404,69 @@
             this.showDisplayBox.UseVisualStyleBackColor = false;
             this.showDisplayBox.CheckedChanged += new System.EventHandler(this.showDisplayBox_CheckedChanged);
             // 
+            // learnRateTextBox
+            // 
+            this.learnRateTextBox.Location = new System.Drawing.Point(12, 351);
+            this.learnRateTextBox.Name = "learnRateTextBox";
+            this.learnRateTextBox.Size = new System.Drawing.Size(45, 20);
+            this.learnRateTextBox.TabIndex = 21;
+            // 
+            // learnRateLabel
+            // 
+            this.learnRateLabel.AutoSize = true;
+            this.learnRateLabel.Location = new System.Drawing.Point(12, 335);
+            this.learnRateLabel.Name = "learnRateLabel";
+            this.learnRateLabel.Size = new System.Drawing.Size(60, 13);
+            this.learnRateLabel.TabIndex = 22;
+            this.learnRateLabel.Text = "Learn Rate";
+            // 
+            // learnRateBtn
+            // 
+            this.learnRateBtn.Location = new System.Drawing.Point(63, 351);
+            this.learnRateBtn.Name = "learnRateBtn";
+            this.learnRateBtn.Size = new System.Drawing.Size(57, 20);
+            this.learnRateBtn.TabIndex = 23;
+            this.learnRateBtn.Text = "Modify";
+            this.learnRateBtn.UseVisualStyleBackColor = true;
+            this.learnRateBtn.Click += new System.EventHandler(this.learnRateBtn_Click);
+            // 
+            // numEpochLabel
+            // 
+            this.numEpochLabel.AutoSize = true;
+            this.numEpochLabel.Location = new System.Drawing.Point(144, 335);
+            this.numEpochLabel.Name = "numEpochLabel";
+            this.numEpochLabel.Size = new System.Drawing.Size(65, 13);
+            this.numEpochLabel.TabIndex = 24;
+            this.numEpochLabel.Text = "# of Epochs";
+            // 
+            // numEpochTextBox
+            // 
+            this.numEpochTextBox.Location = new System.Drawing.Point(147, 351);
+            this.numEpochTextBox.Name = "numEpochTextBox";
+            this.numEpochTextBox.Size = new System.Drawing.Size(52, 20);
+            this.numEpochTextBox.TabIndex = 25;
+            // 
+            // numEpochBtn
+            // 
+            this.numEpochBtn.Location = new System.Drawing.Point(205, 351);
+            this.numEpochBtn.Name = "numEpochBtn";
+            this.numEpochBtn.Size = new System.Drawing.Size(55, 21);
+            this.numEpochBtn.TabIndex = 26;
+            this.numEpochBtn.Text = "Modify";
+            this.numEpochBtn.UseVisualStyleBackColor = true;
+            this.numEpochBtn.Click += new System.EventHandler(this.numEpochBtn_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 398);
+            this.Controls.Add(this.numEpochBtn);
+            this.Controls.Add(this.numEpochTextBox);
+            this.Controls.Add(this.numEpochLabel);
+            this.Controls.Add(this.learnRateBtn);
+            this.Controls.Add(this.learnRateLabel);
+            this.Controls.Add(this.learnRateTextBox);
             this.Controls.Add(this.showDisplayBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.testBtn2);
@@ -471,6 +535,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupDisplay;
         private System.Windows.Forms.CheckBox showDisplayBox;
+        private System.Windows.Forms.TextBox learnRateTextBox;
+        private System.Windows.Forms.Label learnRateLabel;
+        private System.Windows.Forms.Button learnRateBtn;
+        private System.Windows.Forms.Label numEpochLabel;
+        private System.Windows.Forms.TextBox numEpochTextBox;
+        private System.Windows.Forms.Button numEpochBtn;
     }
 }
 

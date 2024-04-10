@@ -17,11 +17,25 @@ namespace NeuralNet
 {
     internal class AccordNeuralNet
     {
-        double learnRate = 0.05; 
-        int numEpochs = 300;
+        double learnRate = 0.03; 
+        int numEpochs = 50;
         Stopwatch stopwatch = new Stopwatch();
+        
+        // Property for learnRate
+        public double LearnRate
+        {
+            get { return learnRate; }
+            set { learnRate = value; }
+        }
 
-        public void theFunction()
+        // Property for numEpochs
+        public int NumEpochs
+        {
+            get { return numEpochs; }
+            set { numEpochs = value; }
+        }
+
+        public void Train()
         {
             // Start the stopwatch
             stopwatch.Start();
@@ -30,7 +44,7 @@ namespace NeuralNet
             Console.WriteLine("Loading data....");
             var prjPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..");
             var path = Path.Combine(prjPath, "..");
-            path = Path.Combine(path, "handwritten_digits_large.csv");
+            path = Path.Combine(path, "mnist_train.csv");
             var digits = Frame.ReadCsv(path, separators: ",", hasHeaders: false);
             Console.WriteLine($"    {digits.RowCount} rows loaded");
 
@@ -66,7 +80,7 @@ namespace NeuralNet
                 784,
                 250,
                 100,
-                50,
+                100,
                 10);
 
             // randomize network weights
