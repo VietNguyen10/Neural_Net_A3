@@ -22,8 +22,9 @@ namespace NeuralNet
 
         //Drawing variables
         private Bitmap drawnBitmap;
+        private double[] drawnNormalized;
         private Graphics drawnGraphics;
-        private bool isDrawing = false;
+        private bool drawing = false;
         private System.Drawing.Point previousPoint;
         readonly private Pen drawingPen = new Pen(Brushes.Black, 10);
         
@@ -51,7 +52,7 @@ namespace NeuralNet
             InitializeComponent();
             InitializeDrawingArea();
 
-
+            groupDisplay2.Hide();
             learnRateTextBox.Text = AccordNeuralNet.LearnRate.ToString();
             numEpochTextBox.Text = AccordNeuralNet.NumEpochs.ToString();
 
@@ -65,17 +66,10 @@ namespace NeuralNet
             bars = new List<ProgressBar>();
             for (var i = 0; i < 10; i++)
             {
-                //Creates and adds labels
-                var label = new Label();
-                label.Text = i.ToString();
-                label.Top = 20 + i * 25;
-                label.Left = 300;
-                label.Width = 25;
-
                 //Adds bars
                 var progress = new ProgressBar();
-                progress.Top = 20 + i * 25;
-                progress.Left = 350;
+                progress.Top = 35 + i * 25;
+                progress.Left = 300;
                 progress.Width = 170;
                 this.Controls.Add(progress);
                 bars.Add(progress);
@@ -95,24 +89,23 @@ namespace NeuralNet
         /// </summary>
         private void PredictDigit()
         {
-            //construct doodle
-            //var bitmap = new Bitmap(280, 280);
-          
+            // Run prediction
+            double[] predictions = network.Compute(drawnNormalized.ToArray());
 
-            //get pixel data
-            var pixels =
-                from y in Enumerable.Range(0, 28)
-                from x in Enumerable.Range(0, 28)
-                select drawnBitmap.GetPixel(x, y).B / 255.0;
+            // Find the index of the maximum prediction value
+            int maxIndex = 0;
+            double maxPrediction = predictions[0];
+            for (int i = 1; i < predictions.Length; i++)
+            {
+                if (predictions[i] > maxPrediction)
+                {
+                    maxIndex = i;
+                    maxPrediction = predictions[i];
+                }
+            }
 
-            //normalize input
-            var input = (from p in pixels
-                         let v = 1.0 * (255 - p) / 255
-                         select v > 0.1 ? v : 0).ToArray();
+            MessageBox.Show("The digit is: " + maxPrediction);
 
-            //run prediction
-            var predictions = network.Compute(input.ToArray());
-            
             //display results
             for (var i = 0; i < 10; i++)
             {
@@ -174,24 +167,23 @@ namespace NeuralNet
 
         private void drawingArea_MouseDown(object sender, MouseEventArgs e)
         {
-            isDrawing = true;
+            drawing = true;
             previousPoint = e.Location;
         }
 
         private void drawingArea_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDrawing)
+            if (drawing)
             {
-                // Calculate the circle coordinates
-                int diameter = 2 * Math.Max(Math.Abs(e.X - previousPoint.X), Math.Abs(e.Y - previousPoint.Y));
-                int x = e.X - diameter / 2;
-                int y = e.Y - diameter / 2;
+                // Add the current mouse point to the doodle list
+                doodle.Add(e.Location);
 
+                // Draw a line between the previous point and the current point
                 using (Graphics bitmapGraphics = Graphics.FromImage(drawnBitmap))
                 {
-                    bitmapGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
+                    bitmapGraphics.DrawLine(drawingPen, previousPoint, e.Location);
                 }
-                drawnGraphics.DrawEllipse(drawingPen, x, y, diameter, diameter);
+                drawnGraphics.DrawLine(drawingPen, previousPoint, e.Location);
 
                 drawingArea.Invalidate();
                 previousPoint = e.Location;
@@ -201,20 +193,12 @@ namespace NeuralNet
 
         private void drawingArea_MouseUp(object sender, MouseEventArgs e)
         {
-            isDrawing = false;
+            drawing = false;
         }
 
         // Submits Drawing Area -- process to 28x28//
         private void submitDrawingBtn_Click(object sender, EventArgs e)
         {
-            float scaleX = (float)28 / drawnBitmap.Width;
-            float scaleY = (float)28 / drawnBitmap.Height;
-
-            var bitmap = drawnBitmap;
-            var g = Graphics.FromImage(bitmap);
-            g.Clear(Color.White);
-            g.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
-            
             //resize image to 28*28
             var resizer = new ResizeBilinear(28, 28);
             Bitmap resizedImage = resizer.Apply(drawnBitmap);
@@ -225,16 +209,10 @@ namespace NeuralNet
                 from x in Enumerable.Range(0, 28)
                 select resizedImage.GetPixel(x, y).B / 255.0;
 
-            // Get the graphics object of the resized image
-            using (Graphics g = Graphics.FromImage(resizedImage))
-            {
-                // Clear the resized image with white background
-                g.Clear(Color.White);
-
-                g.ScaleTransform(scaleX, scaleY);
-                //g.DrawImage(drawnBitmap, new PointF(0, 0));
-                g.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
-            }
+            //normalize input
+            drawnNormalized = (from p in pixels
+                         let v = 1.0 * (255 - p) / 255
+                         select v > 0.1 ? v : 0).ToArray();
 
             // Display the resized image in the displayPictureBox
             if (displayArea.Image != null)
@@ -252,6 +230,7 @@ namespace NeuralNet
             //Clears previous drawing
             drawnBitmap = new Bitmap(drawingArea.Width, drawingArea.Height);
             drawnGraphics.Clear(Color.White);
+            Graphics.FromImage(drawnBitmap).Clear(Color.White);
             drawingArea.Refresh();
         }
 
@@ -383,6 +362,7 @@ namespace NeuralNet
         private void showDisplayBox_CheckedChanged(object sender, EventArgs e)
         {
             groupDisplay.Visible = !groupDisplay.Visible;
+            groupDisplay2.Visible = !groupDisplay2.Visible;
         }
 
         //////////////////////////////Testing button items/////////////////////////////////
