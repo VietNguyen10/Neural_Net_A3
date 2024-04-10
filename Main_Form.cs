@@ -95,26 +95,15 @@ namespace NeuralNet
         /// </summary>
         private void PredictDigit()
         {
-            if (doodle.Count < 2)
-            {
-                MessageBox.Show("Please draw a digit first.");
-                return;
-            }
             //construct doodle
-            var bitmap = new Bitmap(280, 280);
-            var g = Graphics.FromImage(bitmap);
-            g.Clear(Color.White);
-            g.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
-
-            //resize image to 28*28
-            var resizer = new ResizeBilinear(28, 28);
-            var img = resizer.Apply(bitmap);
+            //var bitmap = new Bitmap(280, 280);
+          
 
             //get pixel data
             var pixels =
                 from y in Enumerable.Range(0, 28)
                 from x in Enumerable.Range(0, 28)
-                select img.GetPixel(x, y).B / 255.0;
+                select drawnBitmap.GetPixel(x, y).B / 255.0;
 
             //normalize input
             var input = (from p in pixels
@@ -218,11 +207,23 @@ namespace NeuralNet
         // Submits Drawing Area -- process to 28x28//
         private void submitDrawingBtn_Click(object sender, EventArgs e)
         {
-            // Create a new Bitmap with size 28x28
-            Bitmap resizedImage = new Bitmap(28, 28);
             float scaleX = (float)28 / drawnBitmap.Width;
             float scaleY = (float)28 / drawnBitmap.Height;
 
+            var bitmap = drawnBitmap;
+            var g = Graphics.FromImage(bitmap);
+            g.Clear(Color.White);
+            g.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
+            
+            //resize image to 28*28
+            var resizer = new ResizeBilinear(28, 28);
+            Bitmap resizedImage = resizer.Apply(drawnBitmap);
+
+            //get pixel data
+            var pixels =
+                from y in Enumerable.Range(0, 28)
+                from x in Enumerable.Range(0, 28)
+                select resizedImage.GetPixel(x, y).B / 255.0;
 
             // Get the graphics object of the resized image
             using (Graphics g = Graphics.FromImage(resizedImage))
@@ -231,7 +232,8 @@ namespace NeuralNet
                 g.Clear(Color.White);
 
                 g.ScaleTransform(scaleX, scaleY);
-                g.DrawImage(drawnBitmap, new PointF(0, 0));
+                //g.DrawImage(drawnBitmap, new PointF(0, 0));
+                g.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
             }
 
             // Display the resized image in the displayPictureBox
@@ -392,11 +394,7 @@ namespace NeuralNet
 
         private void whatPokemon_Click(object sender, EventArgs e)
         {
-            int result = nnMNIST.GetMaxNeuronIndex(nnMNIST.numLayers - 1);
-
-            // Display the result
-            label1.Text = result.ToString();
-            MessageBox.Show("The result is: " + result);
+            PredictDigit();
         }
 
         private double[] ConvertBitmapToInput(Bitmap bitmap)

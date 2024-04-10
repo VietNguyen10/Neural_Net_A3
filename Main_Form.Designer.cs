@@ -73,11 +73,14 @@
             this.numEpochLabel = new System.Windows.Forms.Label();
             this.numEpochTextBox = new System.Windows.Forms.TextBox();
             this.numEpochBtn = new System.Windows.Forms.Button();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawingArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.groupDisplay.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -275,7 +278,7 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 376);
+            this.statusStrip.Location = new System.Drawing.Point(0, 402);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(513, 22);
             this.statusStrip.TabIndex = 2;
@@ -289,9 +292,9 @@
             // 
             // clearDrawingBtn
             // 
-            this.clearDrawingBtn.Location = new System.Drawing.Point(90, 283);
+            this.clearDrawingBtn.Location = new System.Drawing.Point(78, 283);
             this.clearDrawingBtn.Name = "clearDrawingBtn";
-            this.clearDrawingBtn.Size = new System.Drawing.Size(75, 38);
+            this.clearDrawingBtn.Size = new System.Drawing.Size(74, 38);
             this.clearDrawingBtn.TabIndex = 5;
             this.clearDrawingBtn.Text = "Clear Drawing";
             this.clearDrawingBtn.UseVisualStyleBackColor = true;
@@ -301,7 +304,7 @@
             // 
             this.submitDrawingBtn.Location = new System.Drawing.Point(9, 283);
             this.submitDrawingBtn.Name = "submitDrawingBtn";
-            this.submitDrawingBtn.Size = new System.Drawing.Size(75, 38);
+            this.submitDrawingBtn.Size = new System.Drawing.Size(63, 38);
             this.submitDrawingBtn.TabIndex = 6;
             this.submitDrawingBtn.Text = "Submit Drawing";
             this.submitDrawingBtn.UseVisualStyleBackColor = true;
@@ -347,22 +350,22 @@
             // 
             // testBtn
             // 
-            this.testBtn.Location = new System.Drawing.Point(422, 294);
+            this.testBtn.Location = new System.Drawing.Point(387, 22);
             this.testBtn.Name = "testBtn";
-            this.testBtn.Size = new System.Drawing.Size(75, 45);
+            this.testBtn.Size = new System.Drawing.Size(81, 37);
             this.testBtn.TabIndex = 12;
-            this.testBtn.Text = "Testing Button";
+            this.testBtn.Text = "Train Network";
             this.testBtn.UseVisualStyleBackColor = true;
             this.testBtn.Click += new System.EventHandler(this.testBtn_Click);
             // 
             // testBtn2
             // 
             this.testBtn2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.testBtn2.Location = new System.Drawing.Point(228, 293);
+            this.testBtn2.Location = new System.Drawing.Point(158, 283);
             this.testBtn2.Name = "testBtn2";
-            this.testBtn2.Size = new System.Drawing.Size(75, 45);
+            this.testBtn2.Size = new System.Drawing.Size(61, 38);
             this.testBtn2.TabIndex = 14;
-            this.testBtn2.Text = "Who\'s that pokemon?";
+            this.testBtn2.Text = "Predict";
             this.testBtn2.UseVisualStyleBackColor = true;
             this.testBtn2.Click += new System.EventHandler(this.whatPokemon_Click);
             // 
@@ -394,7 +397,7 @@
             this.showDisplayBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.showDisplayBox.Checked = true;
             this.showDisplayBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showDisplayBox.Location = new System.Drawing.Point(422, 354);
+            this.showDisplayBox.Location = new System.Drawing.Point(412, 304);
             this.showDisplayBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.showDisplayBox.Name = "showDisplayBox";
             this.showDisplayBox.Size = new System.Drawing.Size(90, 17);
@@ -406,7 +409,7 @@
             // 
             // learnRateTextBox
             // 
-            this.learnRateTextBox.Location = new System.Drawing.Point(12, 351);
+            this.learnRateTextBox.Location = new System.Drawing.Point(27, 38);
             this.learnRateTextBox.Name = "learnRateTextBox";
             this.learnRateTextBox.Size = new System.Drawing.Size(45, 20);
             this.learnRateTextBox.TabIndex = 21;
@@ -414,7 +417,7 @@
             // learnRateLabel
             // 
             this.learnRateLabel.AutoSize = true;
-            this.learnRateLabel.Location = new System.Drawing.Point(12, 335);
+            this.learnRateLabel.Location = new System.Drawing.Point(27, 22);
             this.learnRateLabel.Name = "learnRateLabel";
             this.learnRateLabel.Size = new System.Drawing.Size(60, 13);
             this.learnRateLabel.TabIndex = 22;
@@ -422,7 +425,7 @@
             // 
             // learnRateBtn
             // 
-            this.learnRateBtn.Location = new System.Drawing.Point(63, 351);
+            this.learnRateBtn.Location = new System.Drawing.Point(78, 38);
             this.learnRateBtn.Name = "learnRateBtn";
             this.learnRateBtn.Size = new System.Drawing.Size(57, 20);
             this.learnRateBtn.TabIndex = 23;
@@ -433,7 +436,7 @@
             // numEpochLabel
             // 
             this.numEpochLabel.AutoSize = true;
-            this.numEpochLabel.Location = new System.Drawing.Point(144, 335);
+            this.numEpochLabel.Location = new System.Drawing.Point(208, 22);
             this.numEpochLabel.Name = "numEpochLabel";
             this.numEpochLabel.Size = new System.Drawing.Size(65, 13);
             this.numEpochLabel.TabIndex = 24;
@@ -441,14 +444,14 @@
             // 
             // numEpochTextBox
             // 
-            this.numEpochTextBox.Location = new System.Drawing.Point(147, 351);
+            this.numEpochTextBox.Location = new System.Drawing.Point(211, 38);
             this.numEpochTextBox.Name = "numEpochTextBox";
             this.numEpochTextBox.Size = new System.Drawing.Size(52, 20);
             this.numEpochTextBox.TabIndex = 25;
             // 
             // numEpochBtn
             // 
-            this.numEpochBtn.Location = new System.Drawing.Point(205, 351);
+            this.numEpochBtn.Location = new System.Drawing.Point(269, 38);
             this.numEpochBtn.Name = "numEpochBtn";
             this.numEpochBtn.Size = new System.Drawing.Size(55, 21);
             this.numEpochBtn.TabIndex = 26;
@@ -456,21 +459,39 @@
             this.numEpochBtn.UseVisualStyleBackColor = true;
             this.numEpochBtn.Click += new System.EventHandler(this.numEpochBtn_Click);
             // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(0, 24);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 378);
+            this.splitter1.TabIndex = 27;
+            this.splitter1.TabStop = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.testBtn);
+            this.groupBox1.Controls.Add(this.numEpochBtn);
+            this.groupBox1.Controls.Add(this.learnRateTextBox);
+            this.groupBox1.Controls.Add(this.numEpochTextBox);
+            this.groupBox1.Controls.Add(this.learnRateLabel);
+            this.groupBox1.Controls.Add(this.numEpochLabel);
+            this.groupBox1.Controls.Add(this.learnRateBtn);
+            this.groupBox1.Location = new System.Drawing.Point(0, 326);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(513, 73);
+            this.groupBox1.TabIndex = 28;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Training Options";
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(513, 398);
-            this.Controls.Add(this.numEpochBtn);
-            this.Controls.Add(this.numEpochTextBox);
-            this.Controls.Add(this.numEpochLabel);
-            this.Controls.Add(this.learnRateBtn);
-            this.Controls.Add(this.learnRateLabel);
-            this.Controls.Add(this.learnRateTextBox);
+            this.ClientSize = new System.Drawing.Size(513, 424);
+            this.Controls.Add(this.splitter1);
             this.Controls.Add(this.showDisplayBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.testBtn2);
-            this.Controls.Add(this.testBtn);
             this.Controls.Add(this.drawingAreaLabel);
             this.Controls.Add(this.submitDrawingBtn);
             this.Controls.Add(this.clearDrawingBtn);
@@ -478,6 +499,7 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.groupDisplay);
+            this.Controls.Add(this.groupBox1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "Main_Form";
@@ -491,6 +513,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).EndInit();
             this.groupDisplay.ResumeLayout(false);
             this.groupDisplay.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -541,6 +565,8 @@
         private System.Windows.Forms.Label numEpochLabel;
         private System.Windows.Forms.TextBox numEpochTextBox;
         private System.Windows.Forms.Button numEpochBtn;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
