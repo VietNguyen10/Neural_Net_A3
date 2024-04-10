@@ -79,6 +79,7 @@ namespace NeuralNet
             //loads neural network
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..");
             var fileName = Path.Combine(path, "trained_network.state");
+
             Serializer.Load(fileName, out network);
 
             //initialize doodle
@@ -185,7 +186,6 @@ namespace NeuralNet
         {
             drawing = true;
             previousPoint = e.Location;
-            PredictDigit();
         }
 
         private void drawingArea_MouseMove(object sender, MouseEventArgs e)
@@ -353,12 +353,17 @@ namespace NeuralNet
         {
             try
             {
-                nnMNIST.LoadWeightsFromFile("../../weights.txt");
-                MessageBox.Show("Weights loaded successfully.");
+                //loads neural network
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..");
+                var fileName = Path.Combine(path, "trained_network.state");
+
+                Serializer.Load(fileName, out network);
+
+                MessageBox.Show("Trained Data 98% created successfully.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading weights: " + ex.Message);
+                MessageBox.Show("Error Loading Data: " + ex.Message);
             }
         }
 
@@ -366,13 +371,35 @@ namespace NeuralNet
         {
             try
             {
-                nnMNIST.SetRandomWeights();
-                nnMNIST.SaveWeightsToFile("../../weights.txt");
-                MessageBox.Show("Weights created successfully.");
+                //loads neural network
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..");
+                var fileName = Path.Combine(path, "trained_network(1).state");
+
+                Serializer.Load(fileName, out network);
+
+                MessageBox.Show("Trained Data 94.6% created successfully.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error creating weights: " + ex.Message);
+                MessageBox.Show("Error Loading Data: " + ex.Message);
+            }
+        }
+
+        private void trainedData75ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //loads neural network
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..");
+                var fileName = Path.Combine(path, "trained_network(2).state");
+
+                Serializer.Load(fileName, out network);
+
+                MessageBox.Show("Trained Data 75% created successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error Loading Data: " + ex.Message);
             }
         }
 
@@ -493,5 +520,7 @@ namespace NeuralNet
                 MessageBox.Show("Invalid input. Please enter a valid number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        
     }
 }

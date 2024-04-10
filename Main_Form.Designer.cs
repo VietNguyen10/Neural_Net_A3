@@ -85,6 +85,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupDisplay2 = new System.Windows.Forms.GroupBox();
+            this.trainedData75ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
@@ -130,7 +131,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.ShowNewForm);
             // 
@@ -265,23 +266,24 @@
             // 
             this.weightsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.useExistingWeightsToolStripMenuItem,
-            this.createWeightsToolStripMenuItem});
+            this.createWeightsToolStripMenuItem,
+            this.trainedData75ToolStripMenuItem});
             this.weightsToolStripMenuItem.Name = "weightsToolStripMenuItem";
-            this.weightsToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.weightsToolStripMenuItem.Text = "Weights";
+            this.weightsToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.weightsToolStripMenuItem.Text = "Load Data";
             // 
             // useExistingWeightsToolStripMenuItem
             // 
             this.useExistingWeightsToolStripMenuItem.Name = "useExistingWeightsToolStripMenuItem";
-            this.useExistingWeightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.useExistingWeightsToolStripMenuItem.Text = "Use Existing Weights";
+            this.useExistingWeightsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.useExistingWeightsToolStripMenuItem.Text = "Trained Data: 98%";
             this.useExistingWeightsToolStripMenuItem.Click += new System.EventHandler(this.useExistingWeightsToolStripMenuItem_Click);
             // 
             // createWeightsToolStripMenuItem
             // 
             this.createWeightsToolStripMenuItem.Name = "createWeightsToolStripMenuItem";
-            this.createWeightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.createWeightsToolStripMenuItem.Text = "Create Weights";
+            this.createWeightsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createWeightsToolStripMenuItem.Text = "Trained Data: 94.6%";
             this.createWeightsToolStripMenuItem.Click += new System.EventHandler(this.createWeightsToolStripMenuItem_Click);
             // 
             // statusStrip
@@ -604,6 +606,13 @@
             this.groupDisplay2.TabIndex = 40;
             this.groupDisplay2.TabStop = false;
             // 
+            // trainedData75ToolStripMenuItem
+            // 
+            this.trainedData75ToolStripMenuItem.Name = "trainedData75ToolStripMenuItem";
+            this.trainedData75ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.trainedData75ToolStripMenuItem.Text = "Trained Data: 75%";
+            this.trainedData75ToolStripMenuItem.Click += new System.EventHandler(this.trainedData75ToolStripMenuItem_Click);
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -700,6 +709,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupDisplay2;
+        private System.Windows.Forms.ToolStripMenuItem trainedData75ToolStripMenuItem;
     }
 }
 
