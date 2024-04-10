@@ -85,6 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccordNeuralNet.cs" />
     <Compile Include="Activation.cs" />
     <Compile Include="IActivation.cs" />
     <Compile Include="Layer.cs" />
@@ -128,10 +129,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="t10k-images.idx3-ubyte" />
-    <None Include="t10k-labels.idx1-ubyte" />
-    <None Include="train-images.idx3-ubyte" />
-    <None Include="train-labels.idx1-ubyte" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
