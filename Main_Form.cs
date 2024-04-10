@@ -383,29 +383,7 @@ namespace NeuralNet
 
         private void testBtn_Click(object sender, EventArgs e)
         {
-
-        }
-
-       
-
-
-        // Function to flatten a 2D array into a 1D array
-        private double[] FlattenImage(double[][] image)
-        {
-            int rows = image.Length;
-            int cols = image[0].Length;
-            double[] flattenedImage = new double[rows * cols];
-
-            int index = 0;
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    flattenedImage[index++] = image[i][j];
-                }
-            }
-
-            return flattenedImage;
+            AccordNeuralNet.theFunction();
         }
 
         private void whatPokemon_Click(object sender, EventArgs e)

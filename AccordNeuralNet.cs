@@ -11,41 +11,32 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace NeuralNet
 {
     internal class AccordNeuralNet
     {
         double learnRate = 0.05; 
-        
+        int numEpochs = 300;
+        Stopwatch stopwatch = new Stopwatch();
+
         public void theFunction()
         {
+            // Start the stopwatch
+            stopwatch.Start();
+
             // read data
             Console.WriteLine("Loading data....");
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..");
-            path = Path.Combine(path, "..");
-            path = Path.Combine(path, "handwritten_digits_small.csv");
+            var prjPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..");
+            var path = Path.Combine(prjPath, "..");
+            path = Path.Combine(path, "handwritten_digits_large.csv");
             var digits = Frame.ReadCsv(path, separators: ",", hasHeaders: false);
             Console.WriteLine($"    {digits.RowCount} rows loaded");
 
             // normalize pixel values to 0..1
             for (var i = 2; i <= 785; i++)
                 digits[$"Column{i}"] /= 255.0;
-
-            // grab a random digit
-            var rnd = new Random();
-            var row = rnd.Next(1, digits.RowCount);
-            var label = digits.Rows[row]["Column1"].ToString();
-
-            // plot the digit
-            var x = Enumerable.Range(0, 784).Select(v => (double)(v % 28));
-            var y = Enumerable.Range(0, 784).Select(v => (double)(-v / 28));
-            var z = from i in Enumerable.Range(2, 784)
-                    let v = (double)digits.Rows[row][$"Column{i}"]
-                    select v > 0.5 ? 1 : 0;
-            Scatterplot plot = new Scatterplot($"Digit {label}", "x", "y");
-            plot.Compute(x.ToArray(), y.ToArray(), z.ToArray());
-            ScatterplotBox.Show(plot);
 
             // create one-hot label columns
             for (var i = 0; i < 10; i++)
@@ -73,8 +64,9 @@ namespace NeuralNet
             var network = new ActivationNetwork(
                 new SigmoidFunction(),
                 784,
+                250,
                 100,
-                100,
+                50,
                 10);
 
             // randomize network weights
@@ -90,7 +82,7 @@ namespace NeuralNet
             Console.WriteLine("Training neural network....");
             var errors = new List<double>();
             var validationErrors = new List<double>();
-            for (var epoch = 0; epoch < 50; epoch++)
+            for (var epoch = 0; epoch < numEpochs; epoch++)
             {
                 var error = learner.RunEpoch(features, labels) / labels.GetLength(0);
                 var validationError = Validate(validation, network);
@@ -126,28 +118,51 @@ namespace NeuralNet
                 }
             }
 
+            //Timer 
+            stopwatch.Stop();
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            Console.WriteLine($"Elapsed Time: {elapsedTime}");
+
             // report total mistakes
             var accuracy = 100.0 * (validation.Rows.KeyCount - mistakes) / validation.Rows.KeyCount;
             Console.WriteLine($"Total mistakes: {mistakes}, Accuracy: {accuracy:0.00}%");
 
-            // plot the training and validation curves
-            var tmp = Enumerable.Range(1, 50).Select(v => (double)v);
-            x = tmp.Concat(tmp);
-            y = errors.Concat(validationErrors);
-            z = Enumerable.Repeat(1, 50).Concat(Enumerable.Repeat(2, 50));
-            plot = new Scatterplot("Training & validation curves", "epochs", "training error");
-            plot.Compute(x.ToArray(), y.ToArray(), z.ToArray());
-            ScatterplotBox.Show(plot);
-
             // save the network state
             Console.WriteLine("Saving network state...");
-            var filename = Path.Combine(path, "trained_network.state");
+            string filename = Path.Combine(prjPath, $"trained_network_{elapsedTime.TotalSeconds.ToString("0.00")}s.state");
             Serializer.Save(network, filename);
             Console.WriteLine("Network state saved.");
 
-            Console.ReadLine();
-        }
+
+            ////////////////////////////////////GRAPHICIZES STUFF////////////////////////////////////////
+            // grab a random digit
+            var rnd = new Random();
+            var row = rnd.Next(1, digits.RowCount);
+            var label = digits.Rows[row]["Column1"].ToString();
+
+            // plot the digit
+            var x = Enumerable.Range(0, 784).Select(v => (double)(v % 28));
+            var y = Enumerable.Range(0, 784).Select(v => (double)(-v / 28));
+            var z = from i in Enumerable.Range(2, 784)
+                    let v = (double)digits.Rows[row][$"Column{i}"]
+                    select v > 0.5 ? 1 : 0;
+            Scatterplot plot = new Scatterplot($"Digit {label}", "x", "y");
+            plot.Compute(x.ToArray(), y.ToArray(), z.ToArray());
+            ScatterplotBox.Show(plot);
+
+            // plot the training and validation curves
+            var tmp = Enumerable.Range(1, numEpochs).Select(v => (double)v);
+            x = tmp.Concat(tmp);
+            y = errors.Concat(validationErrors);
+            z = Enumerable.Repeat(1, numEpochs).Concat(Enumerable.Repeat(2, numEpochs));
+            plot = new Scatterplot("Training & validation curves", "epochs", "training error");
+            plot.Compute(x.ToArray(), y.ToArray(), z.ToArray());
+            ScatterplotBox.Show(plot);
+            ////////////////////////////////////GRAPHICIZES STUFF////////////////////////////////////////
             
+            
+        }
+
         private static double Validate(Frame<int, string> validation, ActivationNetwork network)
         {
             int mistakes = 0;
