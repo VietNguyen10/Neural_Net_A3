@@ -129,6 +129,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="trained_network%281%29.state" />
     <None Include="trained_network.state" />
   </ItemGroup>
   <ItemGroup>

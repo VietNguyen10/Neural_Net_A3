@@ -24,6 +24,7 @@ namespace NeuralNet
         private Bitmap drawnBitmap;
         private double[] drawnNormalized;
         private Graphics drawnGraphics;
+        private Bitmap resizedImage;
         private bool drawing = false;
         private System.Drawing.Point previousPoint;
         readonly private Pen drawingPen = new Pen(Brushes.Black, 10);
@@ -89,22 +90,38 @@ namespace NeuralNet
         /// </summary>
         private void PredictDigit()
         {
-            // Run prediction
-            double[] predictions = network.Compute(drawnNormalized.ToArray());
-
-            // Find the index of the maximum prediction value
-            int maxIndex = 0;
-            double maxPrediction = predictions[0];
-            for (int i = 1; i < predictions.Length; i++)
+            if (doodle.Count < 2)
             {
-                if (predictions[i] > maxPrediction)
-                {
-                    maxIndex = i;
-                    maxPrediction = predictions[i];
-                }
+                return;
             }
 
-            MessageBox.Show("The digit is: " + maxPrediction);
+            Bitmap bitmap_accord = new Bitmap(280, 280);
+            Graphics g_accord = Graphics.FromImage(bitmap_accord);
+            g_accord.Clear(Color.White);
+            g_accord.DrawLines(new Pen(Color.Black, 10), doodle.ToArray());
+
+            //resize image to 28*28
+            var resizer = new ResizeBilinear(28, 28);
+            resizedImage = resizer.Apply(drawnBitmap);
+
+            //get pixel data
+            var pixels =
+                from y in Enumerable.Range(0, 28)
+                from x in Enumerable.Range(0, 28)
+                select resizedImage.GetPixel(x, y).B;
+
+            //normalize input
+            var input = (from p in pixels
+                        let v = 1.0 * (255 - p) / 255
+                        select v > 0.1 ? v : 0).ToArray();
+
+            // Run prediction
+            double[] predictions = network.Compute(input.ToArray());
+
+            for (int i = 0; i < 10; i++)
+            {
+                bars[i].Value = (int)(predictions[i] * 100);
+            }
 
             //display results
             for (var i = 0; i < 10; i++)
@@ -112,7 +129,6 @@ namespace NeuralNet
                 bars[i].Value = (int)(predictions[i] * 100);
             }
 
-            this.Refresh();
         }
 
         private void InitializeDrawingArea()
@@ -169,6 +185,7 @@ namespace NeuralNet
         {
             drawing = true;
             previousPoint = e.Location;
+            PredictDigit();
         }
 
         private void drawingArea_MouseMove(object sender, MouseEventArgs e)
